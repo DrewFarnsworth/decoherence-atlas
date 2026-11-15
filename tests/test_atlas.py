@@ -97,3 +97,14 @@ def test_b8_optical_dephasing_high_temperature_limit():
     t_gauss = 1 / math.sqrt(lam_w * kT_w)
     # exact result is longer than the static-limit Gaussian (motional narrowing)
     assert b8.optical_dephasing_time(T) > 0.9 * t_gauss
+
+
+def test_b9_overlap_and_dip():
+    b9 = load("b9")
+    # emitter overlap reduces to T2 / 2T1
+    assert b9.emitter_overlap(1e-9, 1.2e-9) == pytest.approx(0.6, rel=2e-3)
+    assert b9.emitter_overlap(1e-9, 2e-9) == pytest.approx(1.0, rel=2e-3)
+    # rectangular filter: first zero of the exchange term at tau = 1 / (2 dnu)
+    P, dnu = b9.spdc_dip(np.array([0.0, 1 / (2 * (3e8 * b9.DLAM / b9.LAM0**2))]))
+    assert P[0] == pytest.approx(0.0, abs=1e-6)
+    assert P[1] == pytest.approx(0.5, abs=2e-3)

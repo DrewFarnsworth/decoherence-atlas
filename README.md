@@ -16,15 +16,15 @@ For each benchmark, the record overlap the framework calls Iᵢⱼ: how far the 
 
 - **Events are boson exchanges, real or virtual alike.** The atlas models photons and their quasiparticles in matter (phonons, vibrational quanta); see `BENCHMARKS.md` for why gluons, W, Z and the Higgs are left out.
 - **A benchmark passes** when the computed quantity matches the measured one within 30%, using the paper's own inputs.
-- **Nothing is claimed beyond the benchmarks** until all eight pass or are explained.
+- **Nothing is claimed beyond the benchmarks** until all the benchmarks pass or are explained.
 
 ## Layout
 
 ```
 README.md          this file
-BENCHMARKS.md      the eight targets, with sources
+BENCHMARKS.md      the nine targets, with sources
 atlas/             shared code: constants, the scattering model, plotting
-benchmarks/b1 … b8 one folder per benchmark: run.py (model, inputs, sources) and result.json
+benchmarks/b1 … b9 one folder per benchmark: run.py (model, inputs, sources) and result.json
 results/           scoreboard.md, atlas_points.json; the common-axis plots come next
 tests/             fast checks on the shared code and each model's pieces
 run_all.py         runs the benchmarks and writes the scoreboard
@@ -32,7 +32,7 @@ run_all.py         runs the benchmarks and writes the scoreboard
 
 ## Status
 
-All eight benchmark scripts written (15 November 2026). See `results/scoreboard.md` for what passes, what fails and why. No new physics is claimed yet.
+Nine benchmark scripts written (15 November 2026; B9 added that evening). See `results/scoreboard.md` for what passes, what fails and why. No new physics is claimed yet.
 
 ## Running it
 
@@ -45,7 +45,7 @@ pip install -r requirements.txt
 Then:
 
 ```
-python run_all.py              # all eight; B4 and B8 take a few minutes each
+python run_all.py              # all nine; B4 and B8 take a few minutes each
 python run_all.py b1 b5        # just some
 python run_all.py --report     # rebuild the scoreboard from saved results
 python -m pytest -q            # fast checks, under a second

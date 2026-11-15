@@ -6,7 +6,8 @@ Draft 2, 15 November 2026. These are the published measurements the atlas must r
 
 - **Events are boson exchanges, real or virtual alike** (decided 15 Nov 2026). Each benchmark names its boson.
 - **Edges the atlas models:** photons, and the electromagnetic quasiparticles built from them in matter (phonons, vibrational quanta). At molecular energies these are the only edges that matter.
-- **Edges it does not model:** gluons (they interact with each other and are confined), W and Z (they change what a particle is), the Higgs (it couples to mass). They need their own specification, and at molecular energies they are frozen: exciting them costs 10⁷ to 10¹⁰ times kT. Where one appears, as in B6, it is treated as a fixed, measured input and not as a domain edge.
+- **Edges it does not model:** gluons (they interact with each other and are confined), W (it changes what a particle is) and Z, the Higgs (it couples to mass). They need their own specification, and at molecular energies they are frozen: exciting them costs 10⁷ to 10¹² times kT. Where one appears, as in B6, it is treated as a fixed, measured input and not as a domain edge.
+- **Field-record rule.** A force joins whatever its field cannot tell apart: by what it radiates (only wavelengths that resolve a separation carry which-path records) and by what it holds (a static field records less detail with distance). Gravity enters only this way, as an upper limit from differences of the classical field.
 - **Success is a match within 30%** to the measured quantity, using the paper's own inputs, with no fitting beyond what the paper itself fitted.
 - **The quantity is always the same:** the overlap of the records an event leaves, Iᵢⱼ = |⟨Eᵢ|Eⱼ⟩|, the core's line (1). In interferometry it appears as fringe visibility, in spin experiments as the echo signal, in crystals as the recoil-free fraction, in spectroscopy as a coherence or energy-transfer time.
 - **Status labels:** **[Established]** replicated and uncontested; **[Contested]** published but disputed. A † marks a number checked against the source while drafting this list.
@@ -24,7 +25,7 @@ with Joos and Zeh's localization rate Λ = p_g² σ_eff n_g v_g / (8π²) for ga
 
 **What the atlas tests:** whether every benchmark sits on this two-part shape once each is expressed as domain size against probe wavelength, temperature and time.
 
-## The eight benchmarks
+## The benchmarks
 
 | # | System and event | Boson | What to reproduce | Tier |
 |---|---|---|---|---|
@@ -36,10 +37,11 @@ with Joos and Zeh's localization rate Λ = p_g² σ_eff n_g v_g / (8π²) for ga
 | B6 | Protons in hexagonal ice, probed by deep inelastic neutron scattering | The probe is the strong nuclear force (outside the atlas), entered as a measured scattering length; the protons' own domain is set by photons and phonons in the ice | Proton mean kinetic energy 156 ± 2 meV at 271 K † (the paper's own path-integral simulation gave 143 ± 2 meV †) | Exact for a model, with uncertain inputs |
 | B7 | O–H stretch vibrations in liquid water | Vibrational quanta passed by dipole coupling (virtual photons) | Intermolecular energy transfer in 80 fs †; frequency memory lost in about 50 fs at 300 K †, lasting beyond about 200 fs at 274 K †; the excitation shared over several molecules † | Exact for a model, with uncertain inputs |
 | B8 | Electronic excitations in the seven-pigment FMO photosynthetic complex | Excitons passed by dipole coupling; phonons of the protein | Electronic coherence of about 60 fs at room temperature †, derived from a homogeneous line width of 175 cm⁻¹ †; at 20 K up to 200 to 500 fs, and irrelevant above about 150 K †; excitations shared over a few neighbouring pigments † | Exact for a model, with uncertain inputs. **[Contested]** history: earlier reports of picosecond coherence are now assigned to vibrations |
+| B9 | Two photons meeting at a beam splitter (Hong–Ou–Mandel interference): (a) photon pairs from a crystal through a 6.25 nm filter; (b) successive photons from single quantum dots | Real photons; for (b) also phonons and slow charge drifts in the emitter | (a) dip width 0.38 mm of delay †, visibility 99.74 ± 2.03% †; (b) visibilities 0.79, 0.83, 0.83 for three dots, against 0.35, 0.23, 0.71 from T₂/2T₁ † | Exact for (a). Distinguishability measured directly: the dip depth is the squared overlap I² |
 
 **In reserve:** radical pairs in robin cryptochrome 4 are magnetically sensitive in isolated protein †, but no single number yet makes a clean target. They join when one does.
 
-## What the eight span
+## What the benchmarks span
 
 | Axis | Range covered |
 |---|---|
@@ -57,6 +59,7 @@ with Joos and Zeh's localization rate Λ = p_g² σ_eff n_g v_g / (8π²) for ga
 - B5: Lamb–Mössbauer factor of α-iron measured with a resonant spectrometer (0.799 ± 0.003). https://opact.sdu.edu.tr/vufind/SummonRecord/FETCH-LOGICAL-c312t-8dcd2cad120f33779525f7ffe13680294700d7ff3f9d08e2c6fbc51035b445473 ; formula and Debye temperature: https://hep.ph.liv.ac.uk/~jbland/JBland-Thesis-2002/node11.html
 - B6: Flammini D et al. (2012). Spherical momentum distribution of the protons in hexagonal ice from modeling of inelastic neutron scattering data. *Journal of Chemical Physics*. https://math.berkeley.edu/~linlin/publications/HexExp.pdf ; Lin L et al. (2011). *Physical Review B* 83:220302(R). https://math.berkeley.edu/%7Elinlin/publications/pihex.pdf ; Senesi R et al. (2013). *Chemical Physics* 427:111.
 - B7: Kraemer D et al. (2008). Temperature dependence of the two-dimensional infrared spectrum of liquid H₂O. *PNAS* 105:437. https://pmc.ncbi.nlm.nih.gov/articles/PMC2206554
+- B9: Kim Y-S et al. (2016). Two-photon interference of temporally separated photons. https://arxiv.org/abs/1607.03678 ; Reigue A et al. (2017). Probing electron-phonon interaction through two-photon interference in resonantly driven semiconductor quantum dots. *Physical Review Letters* 118:233602. https://arxiv.org/abs/1612.07121 ; Hong CK, Ou ZY, Mandel L (1987). *Physical Review Letters* 59:2044.
 - B8: Duan H-G et al. (2017). Nature does not rely on long-lived electronic quantum coherence for photosynthetic energy transfer. *PNAS* 114:8493. https://pmc.ncbi.nlm.nih.gov/articles/PMC5559008 ; Ishizaki A, Fleming GR (2009). *PNAS* 106:17255 (the standard model used); low-temperature study, arXiv:2104.01462.
 - Reserve: Xu J et al. (2021). Magnetic sensitivity of cryptochrome 4 from a migratory songbird. *Nature* 594:535. https://ora.ox.ac.uk/objects/uuid:c1bedca7-c96d-414a-94a2-c9a14aab18fa
 - Theory: Joos E, Zeh HD (1985). *Zeitschrift für Physik B* 59:223; Schlosshauer M (2019). Quantum decoherence. *Physics Reports* 831:1. https://arxiv.org/abs/1911.06282

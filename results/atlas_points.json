@@ -208,5 +208,45 @@
     "record_overlap": 0.36787944117144233,
     "boson": "virtual photons (excitonic coupling); phonons",
     "benchmark": "B8"
+  },
+  {
+    "label": "down-converted photon pair, 6.25 nm filter",
+    "domain_size_m": 0.00019186717312000016,
+    "probe_wavelength_m": 1.55e-06,
+    "temperature_K": null,
+    "time_s": 6.400000000000005e-13,
+    "record_overlap": 1.0,
+    "boson": "real photons",
+    "benchmark": "B9"
+  },
+  {
+    "label": "quantum-dot photon, QD1",
+    "domain_size_m": 0.23084019265999997,
+    "probe_wavelength_m": null,
+    "temperature_K": 4.0,
+    "time_s": 3e-09,
+    "record_overlap": 0.8888194417315589,
+    "boson": "real photons; phonons",
+    "benchmark": "B9"
+  },
+  {
+    "label": "quantum-dot photon, QD2",
+    "domain_size_m": 0.10342839801,
+    "probe_wavelength_m": null,
+    "temperature_K": 4.0,
+    "time_s": 3e-09,
+    "record_overlap": 0.9110433579144299,
+    "boson": "real photons; phonons",
+    "benchmark": "B9"
+  },
+  {
+    "label": "quantum-dot photon, QD3",
+    "domain_size_m": 0.28522254454119994,
+    "probe_wavelength_m": null,
+    "temperature_K": 4.0,
+    "time_s": 3e-09,
+    "record_overlap": 0.9110433579144299,
+    "boson": "real photons; phonons",
+    "benchmark": "B9"
   }
 ]

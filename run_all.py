@@ -1,6 +1,6 @@
 """Run every benchmark and write the scoreboard.
 
-    python run_all.py            run all eight (B4 and B8 take a few minutes each)
+    python run_all.py            run all nine (B4 and B8 take a few minutes each)
     python run_all.py b1 b5      run only some
     python run_all.py --report   rebuild the scoreboard from saved results, no runs
 
@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-NAMES = [f"b{i}" for i in range(1, 9)]
+NAMES = [f"b{i}" for i in range(1, 10)]
 
 
 def run(names):
