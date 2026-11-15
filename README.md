@@ -14,7 +14,7 @@ For each benchmark, the record overlap the framework calls Iᵢⱼ: how far the 
 
 ## Rules
 
-- **Events are boson exchanges.** Real or virtual (see the question in `BENCHMARKS.md`).
+- **Events are boson exchanges, real or virtual alike.** The atlas models photons and their quasiparticles in matter (phonons, vibrational quanta); see `BENCHMARKS.md` for why gluons, W, Z and the Higgs are left out.
 - **A benchmark passes** when the computed quantity matches the measured one within 30%, using the paper's own inputs.
 - **Nothing is claimed beyond the benchmarks** until all eight pass or are explained.
 

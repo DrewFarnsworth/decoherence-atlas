@@ -4,7 +4,9 @@ Draft 1, 14 November 2026. These are the published measurements the atlas must r
 
 ## Rules
 
-- **Events are boson exchanges.** Photons, phonons, gluons and other bosons, real or virtual. Each benchmark names its boson. Two of the eight (B1 and B6) qualify only if virtual bosons count, and are flagged.
+- **Events are boson exchanges, real or virtual alike** (decided 15 Nov 2026). Each benchmark names its boson.
+- **Edges the atlas models:** photons, and the electromagnetic quasiparticles built from them in matter (phonons, vibrational quanta). At molecular energies these are the only edges that matter.
+- **Edges it does not model:** gluons (they interact with each other and are confined), W and Z (they change what a particle is), the Higgs (it couples to mass). They need their own specification, and at molecular energies they are frozen: exciting them costs 10⁷ to 10¹⁰ times kT. Where one appears, as in B6, it is treated as a fixed, measured input and not as a domain edge.
 - **Success is a match within 30%** to the measured quantity, using the paper's own inputs, with no fitting beyond what the paper itself fitted.
 - **The quantity is always the same:** the overlap of the records an event leaves, Iᵢⱼ = |⟨Eᵢ|Eⱼ⟩|, the core's line (1). In interferometry it appears as fringe visibility, in spin experiments as the echo signal, in crystals as the recoil-free fraction, in spectroscopy as a coherence or energy-transfer time.
 - **Status labels:** **[Established]** replicated and uncontested; **[Contested]** published but disputed. A † marks a number checked against the source while drafting this list.
@@ -26,12 +28,12 @@ with Joos and Zeh's localization rate Λ = p_g² σ_eff n_g v_g / (8π²) for ga
 
 | # | System and event | Boson | What to reproduce | Tier |
 |---|---|---|---|---|
-| B1 | C70 fullerenes in a Talbot–Lau interferometer, decohered by collisions with background gas | Virtual photons (the van der Waals interaction) — **flagged** | Fringe visibility falling exponentially with gas pressure, for several gases, at pressures up to 2.5 × 10⁻⁶ mbar † | Controlled approximation |
+| B1 | C70 fullerenes in a Talbot–Lau interferometer, decohered by collisions with background gas | Virtual photons (the van der Waals interaction) | Fringe visibility falling exponentially with gas pressure, for several gases, at pressures up to 2.5 × 10⁻⁶ mbar † | Controlled approximation |
 | B2 | The same molecules heated by laser before entering, decohered by their own thermal emission | Real photons | Visibility 0.47, 0.29, 0.07 and about 0 at heating powers of 0, 3, 6 and 10.5 W †, with molecule temperatures from about 1,000 to 3,000 K † | Controlled approximation |
 | B3 | Oligoporphyrins above 25,000 Da and up to 2,000 atoms, in a 2 m interferometer | None dominant: the test is that every channel stays below threshold | Fringes above 90% of the expected visibility †, superposition held for more than 7 ms † | Upper limit of the atlas |
 | B4 | One electron spin (a nitrogen-vacancy centre in diamond) in a bath of carbon-13 nuclear spins at natural abundance, 1.1% † | Virtual photons (magnetic dipole and hyperfine coupling) | Spin-echo coherence time T₂ of about 100 µs to 1 ms †; the cluster-correlation method is reported to match experiment † | Exact |
 | B5 | Iron-57 nuclei in α-iron absorbing 14.41 keV gamma rays without recoil (the Mössbauer effect) | Real photons and phonons | Recoil-free fraction 0.799 ± 0.003 at room temperature †, from f = exp(−k²⟨x²⟩) †, falling with temperature | Exact for a model of the lattice |
-| B6 | Protons in hexagonal ice, probed by deep inelastic neutron scattering | Neutron–proton coupling is a virtual-boson exchange — **flagged** | The proton momentum distribution and mean kinetic energy against path-integral simulation †; target value to be taken from the papers | Exact for a model, with uncertain inputs |
+| B6 | Protons in hexagonal ice, probed by deep inelastic neutron scattering | The probe is the strong nuclear force (outside the atlas), entered as a measured scattering length; the protons' own domain is set by photons and phonons in the ice | The proton momentum distribution and mean kinetic energy against path-integral simulation †; target value to be taken from the papers | Exact for a model, with uncertain inputs |
 | B7 | O–H stretch vibrations in liquid water | Vibrational quanta passed by dipole coupling (virtual photons) | Intermolecular energy transfer in 80 fs †; frequency memory lost in about 50 fs at 300 K †, lasting beyond about 200 fs at 274 K †; the excitation shared over several molecules † | Exact for a model, with uncertain inputs |
 | B8 | Electronic excitations in the seven-pigment FMO photosynthetic complex | Excitons passed by dipole coupling; phonons of the protein | Electronic coherence of about 60 fs at room temperature †; at 20 K up to 200 to 500 fs, and irrelevant above about 150 K †; excitations shared over a few neighbouring pigments † | Exact for a model, with uncertain inputs. **[Contested]** history: earlier reports of picosecond coherence are now assigned to vibrations |
 
