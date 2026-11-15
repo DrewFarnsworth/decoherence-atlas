@@ -1,0 +1,45 @@
+{
+  "benchmark": "B5",
+  "title": "Moessbauer recoil-free fraction of alpha-iron",
+  "overall": "pass",
+  "checks": [
+    {
+      "name": "recoil-free fraction of alpha-Fe at room temperature",
+      "unit": "fraction",
+      "computed": 0.8231,
+      "measured": 0.799,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Lamb-Moessbauer factor 0.799 +/- 0.003",
+      "note": "Debye model, theta = 470 K (calorimetric), no fitting",
+      "scored": true,
+      "status": "pass",
+      "ratio": 1.030162703379224
+    },
+    {
+      "name": "same, with theta = 420 K (sensitivity)",
+      "unit": "fraction",
+      "computed": 0.7861,
+      "measured": 0.799,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "",
+      "note": "lower end of quoted Debye temperatures",
+      "scored": false,
+      "status": "info (pass)",
+      "ratio": 0.9838548185231539
+    }
+  ],
+  "atlas_points": [
+    {
+      "label": "Fe-57 nucleus in alpha-iron, 14.4 keV gamma",
+      "domain_size_m": 6.0400566159393355e-12,
+      "probe_wavelength_m": 8.602546291982674e-11,
+      "temperature_K": 295.0,
+      "time_s": 1.41e-07,
+      "record_overlap": 0.8231473021381395,
+      "boson": "real photon (gamma) and phonons"
+    }
+  ],
+  "notes": "The domain is the whole crystal: when no phonon is made, the event is shared by every atom and no record says which nucleus took it. The overlap is set by how far each nucleus wanders (0.06 A) against the photon's wavelength (0.86 A). time_s is the Fe-57 excited-state lifetime (141 ns)."
+}

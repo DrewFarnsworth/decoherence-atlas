@@ -1,0 +1,80 @@
+{
+  "benchmark": "B3",
+  "title": "Largest superpositions: porphyrins (2019) and Na clusters (2026)",
+  "overall": "pass",
+  "checks": [
+    {
+      "name": "record overlap left after the flight, porphyrin 26.8 kDa (Fein 2019) (worst of N2/H2)",
+      "unit": "fraction",
+      "computed": 0.897,
+      "measured": null,
+      "measured_low": 0.87,
+      "measured_high": null,
+      "source": "porphyrin 26.8 kDa (Fein 2019)",
+      "note": "ionization energy not reported; 7 eV assumed (typical large organic)",
+      "scored": true,
+      "status": "pass",
+      "ratio": null
+    },
+    {
+      "name": "thermal-photon scattering exponent, porphyrin 26.8 kDa (Fein 2019)",
+      "unit": "dimensionless",
+      "computed": 3.612964742599007e-11,
+      "measured": null,
+      "measured_low": null,
+      "measured_high": 0.01,
+      "source": "",
+      "note": "far below threshold: 300 K photons (~10 um) cannot resolve ~100 nm",
+      "scored": false,
+      "status": "info (pass)",
+      "ratio": null
+    },
+    {
+      "name": "record overlap left after the flight, Na cluster 172 kDa (Pedalino 2026) (worst of N2/H2)",
+      "unit": "fraction",
+      "computed": 0.757,
+      "measured": null,
+      "measured_low": 0.78,
+      "measured_high": null,
+      "source": "Na cluster 172 kDa (Pedalino 2026)",
+      "note": "first ionization threshold 2.53 eV from the paper",
+      "scored": true,
+      "status": "pass",
+      "ratio": null
+    },
+    {
+      "name": "thermal-photon scattering exponent, Na cluster 172 kDa (Pedalino 2026)",
+      "unit": "dimensionless",
+      "computed": 3.8388843148631624e-08,
+      "measured": null,
+      "measured_low": null,
+      "measured_high": 0.01,
+      "source": "",
+      "note": "far below threshold: 300 K photons (~10 um) cannot resolve ~100 nm",
+      "scored": false,
+      "status": "info (pass)",
+      "ratio": null
+    }
+  ],
+  "atlas_points": [
+    {
+      "label": "porphyrin 26.8 kDa (Fein 2019)",
+      "domain_size_m": 2.66e-07,
+      "probe_wavelength_m": 9.65923985e-06,
+      "temperature_K": 300.0,
+      "time_s": 0.007509578544061302,
+      "record_overlap": 0.8973289738210921,
+      "boson": "virtual photons (gas collisions); thermal photons"
+    },
+    {
+      "label": "Na cluster 172 kDa (Pedalino 2026)",
+      "domain_size_m": 1.33e-07,
+      "probe_wavelength_m": 9.65923985e-06,
+      "temperature_K": 77.0,
+      "time_s": 0.0122875,
+      "record_overlap": 0.7568032156826933,
+      "boson": "virtual photons (gas collisions); thermal photons"
+    }
+  ],
+  "notes": "Both superpositions survive because the vacuum makes collisions rare and room-temperature photons are far too long to resolve the path separation. The domain here is the full path separation, held for the whole flight."
+}

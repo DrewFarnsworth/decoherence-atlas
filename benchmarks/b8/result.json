@@ -1,0 +1,115 @@
+{
+  "benchmark": "B8",
+  "title": "FMO electronic coherence",
+  "overall": "partial",
+  "checks": [
+    {
+      "name": "optical dephasing time at room temperature",
+      "unit": "fs",
+      "computed": 78,
+      "measured": 60.0,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Duan 2017 (homogeneous width 175 cm^-1)",
+      "note": "standard model, lambda = 35 cm^-1",
+      "scored": true,
+      "status": "pass",
+      "ratio": 1.3
+    },
+    {
+      "name": "inter-exciton coherence time at room temperature (HEOM)",
+      "unit": "fs",
+      "computed": 148,
+      "measured": 60.0,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Duan 2017",
+      "note": "standard model, lambda = 35 cm^-1",
+      "scored": true,
+      "status": "fail",
+      "ratio": 2.466666666666667
+    },
+    {
+      "name": "inter-exciton coherence time at 20 K (HEOM)",
+      "unit": "fs",
+      "computed": 302,
+      "measured": null,
+      "measured_low": 200.0,
+      "measured_high": 500.0,
+      "source": "arXiv:2104.01462",
+      "note": "",
+      "scored": true,
+      "status": "pass",
+      "ratio": null
+    },
+    {
+      "name": "optical dephasing time at 20 K",
+      "unit": "fs",
+      "computed": 492,
+      "measured": null,
+      "measured_low": 200.0,
+      "measured_high": 500.0,
+      "source": "arXiv:2104.01462",
+      "note": "",
+      "scored": false,
+      "status": "info (pass)",
+      "ratio": null
+    },
+    {
+      "name": "optical dephasing, room temperature, lambda = 190 cm^-1",
+      "unit": "fs",
+      "computed": 29,
+      "measured": 60.0,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "",
+      "note": "Duan's fitted reorganization energy, Drude shape assumed",
+      "scored": false,
+      "status": "info (fail)",
+      "ratio": 0.48333333333333334
+    },
+    {
+      "name": "inter-exciton coherence, room temperature, lambda = 190 cm^-1 (HEOM)",
+      "unit": "fs",
+      "computed": 54,
+      "measured": 60.0,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "",
+      "note": "Duan's fitted reorganization energy, Drude shape assumed",
+      "scored": false,
+      "status": "info (pass)",
+      "ratio": 0.9
+    }
+  ],
+  "atlas_points": [
+    {
+      "label": "FMO excitation, 294 K",
+      "domain_size_m": 2.5e-09,
+      "probe_wavelength_m": 8.064516129032258e-07,
+      "temperature_K": 294.0,
+      "time_s": 1.48e-13,
+      "record_overlap": 0.36787944117144233,
+      "boson": "virtual photons (excitonic coupling); phonons"
+    },
+    {
+      "label": "FMO excitation, 77 K",
+      "domain_size_m": 2.5e-09,
+      "probe_wavelength_m": 8.064516129032258e-07,
+      "temperature_K": 77.0,
+      "time_s": 1.8600000000000002e-13,
+      "record_overlap": 0.36787944117144233,
+      "boson": "virtual photons (excitonic coupling); phonons"
+    },
+    {
+      "label": "FMO excitation, 20 K",
+      "domain_size_m": 2.5e-09,
+      "probe_wavelength_m": 8.064516129032258e-07,
+      "temperature_K": 20.0,
+      "time_s": 3.0200000000000003e-13,
+      "record_overlap": 0.36787944117144233,
+      "boson": "virtual photons (excitonic coupling); phonons"
+    }
+  ],
+  "notes": "With the standard weak coupling (35 cm^-1) the coherence between exciton states outlives the measurement by about 2.5 times; with Duan's stronger coupling (190 cm^-1, Drude shape assumed) it falls to about the measured 60 fs. The coherence time is measured as decay toward the late-time value, because strong coupling leaves a standing mix of exciton states. domain_size is a placeholder of ~2 pigment spacings (the excitation is shared over a few neighbouring pigments); computing it from the exciton states is the next step."
+}

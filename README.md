@@ -24,14 +24,31 @@ For each benchmark, the record overlap the framework calls Iᵢⱼ: how far the 
 README.md          this file
 BENCHMARKS.md      the eight targets, with sources
 atlas/             shared code: constants, the scattering model, plotting
-benchmarks/b1 … b8 one folder per benchmark: a script, its inputs, its result
-results/           the common-axis plots, once there are results
+benchmarks/b1 … b8 one folder per benchmark: run.py (model, inputs, sources) and result.json
+results/           scoreboard.md, atlas_points.json; the common-axis plots come next
+tests/             fast checks on the shared code and each model's pieces
+run_all.py         runs the benchmarks and writes the scoreboard
 ```
 
 ## Status
 
-Benchmark list drafted, awaiting review. No modelling yet.
+All eight benchmark scripts written (15 November 2026). See `results/scoreboard.md` for what passes, what fails and why. No new physics is claimed yet.
 
 ## Running it
 
-Python 3 with NumPy and SciPy. Spin and open-system benchmarks (B4, B7, B8) will also need QuTiP. Instructions arrive with the first script.
+You need Python 3 and four libraries. Once, in this folder:
+
+```
+pip install -r requirements.txt
+```
+
+Then:
+
+```
+python run_all.py              # all eight; B4 and B8 take a few minutes each
+python run_all.py b1 b5        # just some
+python run_all.py --report     # rebuild the scoreboard from saved results
+python -m pytest -q            # fast checks, under a second
+```
+
+Each script prints what it computed against what was measured, and writes `result.json` beside itself. Each file's opening comment says what the event is, which model is used, which inputs come from where, and what is not yet computed.

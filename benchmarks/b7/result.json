@@ -1,0 +1,71 @@
+{
+  "benchmark": "B7",
+  "title": "O-H stretch energy transfer in liquid water",
+  "overall": "partial",
+  "checks": [
+    {
+      "name": "anisotropy decay (1/e) after exciting one O-H",
+      "unit": "fs",
+      "computed": 79.0,
+      "measured": 80.0,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Kraemer 2008, polarization-resolved pump-probe",
+      "note": "five-molecule cluster, static disorder, no fitting",
+      "scored": true,
+      "status": "pass",
+      "ratio": 0.9875
+    },
+    {
+      "name": "Foerster hopping time to the first shell (incoherent limit)",
+      "unit": "fs",
+      "computed": 1189,
+      "measured": 80.0,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "",
+      "note": "",
+      "scored": false,
+      "status": "info (fail)",
+      "ratio": 14.8625
+    },
+    {
+      "name": "coherent short-time transfer time to the first shell",
+      "unit": "fs",
+      "computed": 128,
+      "measured": 80.0,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "",
+      "note": "",
+      "scored": false,
+      "status": "info (fail)",
+      "ratio": 1.6
+    },
+    {
+      "name": "loss of frequency memory at 300 K",
+      "unit": "fs",
+      "computed": null,
+      "measured": 50.0,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Kraemer 2008, 2D IR",
+      "note": "needs molecular dynamics; not modelled",
+      "scored": true,
+      "status": "not computed",
+      "ratio": null
+    }
+  ],
+  "atlas_points": [
+    {
+      "label": "O-H stretch quantum in liquid water",
+      "domain_size_m": 2.85e-10,
+      "probe_wavelength_m": 2.9411764705882355e-06,
+      "temperature_K": 300.0,
+      "time_s": 7.9e-14,
+      "record_overlap": 0.36787944117144233,
+      "boson": "vibrational quanta via virtual photons"
+    }
+  ],
+  "notes": "Within a molecule the two O-H bonds share the quantum in about 100 fs through the oxygen; the transition dipole coupling to neighbours is weaker. If the anisotropy decay is fast here it is mostly the intramolecular hop, as Paarmann et al. (2009) concluded from full simulations. Sensitivity (800 draws each): dipole position 0.50-0.67 A gives 84-74 fs; disorder 70-150 cm^-1 gives 69-100 fs; intramolecular coupling -25 cm^-1 gives 125 fs. The match rests mostly on the gas-phase intramolecular coupling, which is smaller in the liquid in some models; treat it as provisional. Point dipoles only 2 A apart are also at the edge of validity."
+}

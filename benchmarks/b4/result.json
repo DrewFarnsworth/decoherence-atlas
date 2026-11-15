@@ -1,0 +1,54 @@
+{
+  "benchmark": "B4",
+  "title": "NV centre spin in a 13C bath",
+  "overall": "fail",
+  "checks": [
+    {
+      "name": "Hahn-echo T2 at 1.1% 13C",
+      "unit": "ms",
+      "computed": 0.898,
+      "measured": 0.65,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Mizuochi 2009",
+      "note": "median over 16 random baths; spread 0.73-1.01 ms",
+      "scored": true,
+      "status": "fail",
+      "ratio": 1.3815384615384616
+    },
+    {
+      "name": "Hahn-echo T2 at 0.3% 13C",
+      "unit": "ms",
+      "computed": 3.158,
+      "measured": 1.8,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Mizuochi 2009",
+      "note": "median over 16 random baths; spread 2.81-3.77 ms",
+      "scored": true,
+      "status": "fail",
+      "ratio": 1.7544444444444443
+    }
+  ],
+  "atlas_points": [
+    {
+      "label": "NV electron spin, 1.1% 13C",
+      "domain_size_m": 2e-09,
+      "probe_wavelength_m": 933.2005839373275,
+      "temperature_K": 300.0,
+      "time_s": 0.0008980969899665552,
+      "record_overlap": 0.36787944117144233,
+      "boson": "virtual photons (magnetic dipole)"
+    },
+    {
+      "label": "NV electron spin, 0.3% 13C",
+      "domain_size_m": 3.0840433394551614e-09,
+      "probe_wavelength_m": 933.2005839373275,
+      "temperature_K": 300.0,
+      "time_s": 0.003158401337792642,
+      "record_overlap": 0.36787944117144233,
+      "boson": "virtual photons (magnetic dipole)"
+    }
+  ],
+  "notes": "The record is not carried away by any particle; it is written into the bath's own flip-flops. The domain is the electron plus the nuclei within a few nm, and T2 is how long their records stay alike. The model has no fitted parameter. It counts only 13C pairs; real crystals also hold nitrogen and other electron spins, which can only shorten T2, and at 0.3% 13C those other spins are likely to dominate. A single NV's T2 also varies with its own bath: the computed 16-84% spread is reported with each value."
+}

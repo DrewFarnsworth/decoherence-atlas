@@ -1,0 +1,212 @@
+[
+  {
+    "label": "C70 + H2 collision",
+    "domain_size_m": 2.002576345342783e-11,
+    "probe_wavelength_m": 1.2582558269563167e-10,
+    "temperature_K": 300.0,
+    "time_s": 0.0037606837606837607,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (van der Waals)",
+    "benchmark": "B1"
+  },
+  {
+    "label": "C70 + D2 collision",
+    "domain_size_m": 1.4167382351550633e-11,
+    "probe_wavelength_m": 8.901628863245831e-11,
+    "temperature_K": 300.0,
+    "time_s": 0.0037606837606837607,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (van der Waals)",
+    "benchmark": "B1"
+  },
+  {
+    "label": "C70 + He collision",
+    "domain_size_m": 1.4211553383311709e-11,
+    "probe_wavelength_m": 8.929382341022247e-11,
+    "temperature_K": 300.0,
+    "time_s": 0.0037606837606837607,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (van der Waals)",
+    "benchmark": "B1"
+  },
+  {
+    "label": "C70 + CH4 collision",
+    "domain_size_m": 7.099571933179311e-12,
+    "probe_wavelength_m": 4.4607926057816816e-11,
+    "temperature_K": 300.0,
+    "time_s": 0.0037606837606837607,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (van der Waals)",
+    "benchmark": "B1"
+  },
+  {
+    "label": "C70 + Ne collision",
+    "domain_size_m": 6.329563553498669e-12,
+    "probe_wavelength_m": 3.9769820720202244e-11,
+    "temperature_K": 300.0,
+    "time_s": 0.0037606837606837607,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (van der Waals)",
+    "benchmark": "B1"
+  },
+  {
+    "label": "C70 + N2 collision",
+    "domain_size_m": 5.37251691360664e-12,
+    "probe_wavelength_m": 3.375651933414706e-11,
+    "temperature_K": 300.0,
+    "time_s": 0.0037606837606837607,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (van der Waals)",
+    "benchmark": "B1"
+  },
+  {
+    "label": "C70 + Ar collision",
+    "domain_size_m": 4.4985852400328765e-12,
+    "probe_wavelength_m": 2.826544468326952e-11,
+    "temperature_K": 300.0,
+    "time_s": 0.0037606837606837607,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (van der Waals)",
+    "benchmark": "B1"
+  },
+  {
+    "label": "C70 + Kr collision",
+    "domain_size_m": 3.1060778493771047e-12,
+    "probe_wavelength_m": 1.951606270616219e-11,
+    "temperature_K": 300.0,
+    "time_s": 0.0037606837606837607,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (van der Waals)",
+    "benchmark": "B1"
+  },
+  {
+    "label": "C70 + Xe collision",
+    "domain_size_m": 2.4814297389293048e-12,
+    "probe_wavelength_m": 1.5591282876439084e-11,
+    "temperature_K": 300.0,
+    "time_s": 0.0037606837606837607,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (van der Waals)",
+    "benchmark": "B1"
+  },
+  {
+    "label": "hot C70 emitting at 2500 K",
+    "domain_size_m": 1.050776797103568e-07,
+    "probe_wavelength_m": 6.602225332686364e-07,
+    "temperature_K": 2500.0,
+    "time_s": 0.004,
+    "record_overlap": 0.09311833298327472,
+    "boson": "real photons (thermal emission)",
+    "benchmark": "B2"
+  },
+  {
+    "label": "porphyrin 26.8 kDa (Fein 2019)",
+    "domain_size_m": 2.66e-07,
+    "probe_wavelength_m": 9.65923985e-06,
+    "temperature_K": 300.0,
+    "time_s": 0.007509578544061302,
+    "record_overlap": 0.8973289738210921,
+    "boson": "virtual photons (gas collisions); thermal photons",
+    "benchmark": "B3"
+  },
+  {
+    "label": "Na cluster 172 kDa (Pedalino 2026)",
+    "domain_size_m": 1.33e-07,
+    "probe_wavelength_m": 9.65923985e-06,
+    "temperature_K": 77.0,
+    "time_s": 0.0122875,
+    "record_overlap": 0.7568032156826933,
+    "boson": "virtual photons (gas collisions); thermal photons",
+    "benchmark": "B3"
+  },
+  {
+    "label": "NV electron spin, 1.1% 13C",
+    "domain_size_m": 2e-09,
+    "probe_wavelength_m": 933.2005839373275,
+    "temperature_K": 300.0,
+    "time_s": 0.0008980969899665552,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (magnetic dipole)",
+    "benchmark": "B4"
+  },
+  {
+    "label": "NV electron spin, 0.3% 13C",
+    "domain_size_m": 3.0840433394551614e-09,
+    "probe_wavelength_m": 933.2005839373275,
+    "temperature_K": 300.0,
+    "time_s": 0.003158401337792642,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (magnetic dipole)",
+    "benchmark": "B4"
+  },
+  {
+    "label": "Fe-57 nucleus in alpha-iron, 14.4 keV gamma",
+    "domain_size_m": 6.0400566159393355e-12,
+    "probe_wavelength_m": 8.602546291982674e-11,
+    "temperature_K": 295.0,
+    "time_s": 1.41e-07,
+    "record_overlap": 0.8231473021381395,
+    "boson": "real photon (gamma) and phonons",
+    "benchmark": "B5"
+  },
+  {
+    "label": "proton in ice Ih (along O-H)",
+    "domain_size_m": 7.430965628113002e-12,
+    "probe_wavelength_m": 3.1055900621118013e-06,
+    "temperature_K": 271.0,
+    "time_s": null,
+    "record_overlap": null,
+    "boson": "vibrational quanta (stretch)",
+    "benchmark": "B6"
+  },
+  {
+    "label": "proton in ice Ih (across O-H)",
+    "domain_size_m": 1.4275399769976065e-11,
+    "probe_wavelength_m": 1.1904761904761905e-05,
+    "temperature_K": 271.0,
+    "time_s": null,
+    "record_overlap": null,
+    "boson": "vibrational quanta (libration)",
+    "benchmark": "B6"
+  },
+  {
+    "label": "O-H stretch quantum in liquid water",
+    "domain_size_m": 2.85e-10,
+    "probe_wavelength_m": 2.9411764705882355e-06,
+    "temperature_K": 300.0,
+    "time_s": 7.9e-14,
+    "record_overlap": 0.36787944117144233,
+    "boson": "vibrational quanta via virtual photons",
+    "benchmark": "B7"
+  },
+  {
+    "label": "FMO excitation, 294 K",
+    "domain_size_m": 2.5e-09,
+    "probe_wavelength_m": 8.064516129032258e-07,
+    "temperature_K": 294.0,
+    "time_s": 1.48e-13,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (excitonic coupling); phonons",
+    "benchmark": "B8"
+  },
+  {
+    "label": "FMO excitation, 77 K",
+    "domain_size_m": 2.5e-09,
+    "probe_wavelength_m": 8.064516129032258e-07,
+    "temperature_K": 77.0,
+    "time_s": 1.8600000000000002e-13,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (excitonic coupling); phonons",
+    "benchmark": "B8"
+  },
+  {
+    "label": "FMO excitation, 20 K",
+    "domain_size_m": 2.5e-09,
+    "probe_wavelength_m": 8.064516129032258e-07,
+    "temperature_K": 20.0,
+    "time_s": 3.0200000000000003e-13,
+    "record_overlap": 0.36787944117144233,
+    "boson": "virtual photons (excitonic coupling); phonons",
+    "benchmark": "B8"
+  }
+]
