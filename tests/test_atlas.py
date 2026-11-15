@@ -108,3 +108,11 @@ def test_b9_overlap_and_dip():
     P, dnu = b9.spdc_dip(np.array([0.0, 1 / (2 * (3e8 * b9.DLAM / b9.LAM0**2))]))
     assert P[0] == pytest.approx(0.0, abs=1e-6)
     assert P[1] == pytest.approx(0.5, abs=2e-3)
+
+
+def test_b10_duality_is_an_equality_for_pure_states():
+    b10 = load("b10")
+    for R in (0.0, 0.1, 0.3, 0.5):
+        V, D = b10.visibility(R), b10.distinguishability(R)
+        assert V == pytest.approx(2 * math.sqrt(R * (1 - R)), abs=1e-3)
+        assert V**2 + D**2 == pytest.approx(1.0, abs=2e-3)

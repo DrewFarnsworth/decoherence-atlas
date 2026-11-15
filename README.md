@@ -22,9 +22,9 @@ For each benchmark, the record overlap the framework calls Iᵢⱼ: how far the 
 
 ```
 README.md          this file
-BENCHMARKS.md      the nine targets, with sources
+BENCHMARKS.md      the ten targets, with sources
 atlas/             shared code: constants, the scattering model, plotting
-benchmarks/b1 … b9 one folder per benchmark: run.py (model, inputs, sources) and result.json
+benchmarks/b1 … b10 one folder per benchmark: run.py (model, inputs, sources) and result.json
 results/           scoreboard.md, atlas_points.json; the common-axis plots come next
 tests/             fast checks on the shared code and each model's pieces
 run_all.py         runs the benchmarks and writes the scoreboard
@@ -32,7 +32,7 @@ run_all.py         runs the benchmarks and writes the scoreboard
 
 ## Status
 
-Nine benchmark scripts written (15 November 2026; B9 added that evening). See `results/scoreboard.md` for what passes, what fails and why. No new physics is claimed yet.
+Ten benchmark scripts written (15 November 2026; B9 and B10 added that evening). See `results/scoreboard.md` for what passes, what fails and why. No new physics is claimed yet.
 
 ## Running it
 
@@ -45,7 +45,7 @@ pip install -r requirements.txt
 Then:
 
 ```
-python run_all.py              # all nine; B4 and B8 take a few minutes each
+python run_all.py              # all ten; B4 and B8 take a few minutes each
 python run_all.py b1 b5        # just some
 python run_all.py --report     # rebuild the scoreboard from saved results
 python -m pytest -q            # fast checks, under a second

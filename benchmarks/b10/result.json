@@ -1,0 +1,89 @@
+{
+  "benchmark": "B10",
+  "title": "The double slit, with a which-path dial",
+  "overall": "pass",
+  "checks": [
+    {
+      "name": "fringe visibility at V_EOM = 150 V (R = 0.432)",
+      "unit": "fraction",
+      "computed": 0.991,
+      "measured": 0.93,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Jacques et al. 2008, Fig. 3",
+      "note": "R from the measured electro-optic settings, ideal optics",
+      "scored": true,
+      "status": "pass",
+      "ratio": 1.0655913978494622
+    },
+    {
+      "name": "fringe visibility at V_EOM = 40 V (R = 0.045)",
+      "unit": "fraction",
+      "computed": 0.415,
+      "measured": 0.42,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Jacques et al. 2008, Fig. 3",
+      "note": "R from the measured electro-optic settings, ideal optics",
+      "scored": true,
+      "status": "pass",
+      "ratio": 0.9880952380952381
+    },
+    {
+      "name": "fringe visibility at V_EOM = 0 V (R = 0.000)",
+      "unit": "fraction",
+      "computed": 0.0,
+      "measured": 0.0,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Jacques et al. 2008, Fig. 3",
+      "note": "R from the measured electro-optic settings, ideal optics",
+      "scored": true,
+      "status": "pass",
+      "ratio": null
+    },
+    {
+      "name": "V^2 + D^2 (the duality relation, line (1) of the core)",
+      "unit": "dimensionless",
+      "computed": 1.0,
+      "measured": 0.97,
+      "measured_low": null,
+      "measured_high": null,
+      "source": "Jacques et al. 2008 (+/- 0.03)",
+      "note": "equality for pure states; the measured shortfall is imperfect optics",
+      "scored": true,
+      "status": "pass",
+      "ratio": 1.0309278350515465
+    }
+  ],
+  "atlas_points": [
+    {
+      "label": "single photon, two paths, R = 0.43",
+      "domain_size_m": null,
+      "probe_wavelength_m": 6.7e-07,
+      "temperature_K": 300.0,
+      "time_s": null,
+      "record_overlap": 0.9907726759137283,
+      "boson": "real photon"
+    },
+    {
+      "label": "single photon, two paths, R = 0.05",
+      "domain_size_m": null,
+      "probe_wavelength_m": 6.7e-07,
+      "temperature_K": 300.0,
+      "time_s": null,
+      "record_overlap": 0.41470095363087445,
+      "boson": "real photon"
+    },
+    {
+      "label": "single photon, two paths, R = 0.00",
+      "domain_size_m": null,
+      "probe_wavelength_m": 6.7e-07,
+      "temperature_K": 300.0,
+      "time_s": null,
+      "record_overlap": 0.0,
+      "boson": "real photon"
+    }
+  ],
+  "notes": "The output beam splitter decides how much which-path record survives: it is a dial between cut and join. At every setting the fringes and the record trade off exactly as I^2 + D^2 = 1 says for pure states. The model overshoots the best visibility (0.99 against 0.93) because it assumes perfect optics."
+}

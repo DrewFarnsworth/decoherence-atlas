@@ -41,7 +41,7 @@ class Check:
             return self
         x = self.computed
         if self.measured is not None:
-            self.ratio = x / self.measured
+            self.ratio = x / self.measured if self.measured else None
             ok = abs(x - self.measured) <= TOLERANCE * abs(self.measured)
         else:
             lo, hi = self.measured_low, self.measured_high

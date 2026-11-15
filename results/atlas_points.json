@@ -248,5 +248,35 @@
     "record_overlap": 0.9110433579144299,
     "boson": "real photons; phonons",
     "benchmark": "B9"
+  },
+  {
+    "label": "single photon, two paths, R = 0.43",
+    "domain_size_m": null,
+    "probe_wavelength_m": 6.7e-07,
+    "temperature_K": 300.0,
+    "time_s": null,
+    "record_overlap": 0.9907726759137283,
+    "boson": "real photon",
+    "benchmark": "B10"
+  },
+  {
+    "label": "single photon, two paths, R = 0.05",
+    "domain_size_m": null,
+    "probe_wavelength_m": 6.7e-07,
+    "temperature_K": 300.0,
+    "time_s": null,
+    "record_overlap": 0.41470095363087445,
+    "boson": "real photon",
+    "benchmark": "B10"
+  },
+  {
+    "label": "single photon, two paths, R = 0.00",
+    "domain_size_m": null,
+    "probe_wavelength_m": 6.7e-07,
+    "temperature_K": 300.0,
+    "time_s": null,
+    "record_overlap": 0.0,
+    "boson": "real photon",
+    "benchmark": "B10"
   }
 ]
