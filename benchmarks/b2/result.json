@@ -14,6 +14,7 @@
       "note": "grey-body stand-in for the hot C70 absorption spectrum",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": 1.1866666666666668
     },
     {
@@ -27,6 +28,7 @@
       "note": "scored as at most 0.1",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": null
     },
     {
@@ -40,6 +42,7 @@
       "note": "scored as at least 0.9",
       "scored": true,
       "status": "fail",
+      "outside_bound": false,
       "ratio": 0.6077777777777779
     },
     {
@@ -53,6 +56,7 @@
       "note": "tests radiative cooling over the 7.2 cm gap",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": null
     },
     {
@@ -66,6 +70,7 @@
       "note": "needs the temperature distribution per power (Hornberger 2005)",
       "scored": true,
       "status": "not computed",
+      "outside_bound": false,
       "ratio": null
     },
     {
@@ -79,6 +84,7 @@
       "note": "needs the temperature distribution per power (Hornberger 2005)",
       "scored": true,
       "status": "not computed",
+      "outside_bound": false,
       "ratio": null
     },
     {
@@ -92,6 +98,7 @@
       "note": "needs the temperature distribution per power (Hornberger 2005)",
       "scored": true,
       "status": "not computed",
+      "outside_bound": false,
       "ratio": null
     },
     {
@@ -105,6 +112,7 @@
       "note": "needs the temperature distribution per power (Hornberger 2005)",
       "scored": true,
       "status": "not computed",
+      "outside_bound": false,
       "ratio": null
     }
   ],

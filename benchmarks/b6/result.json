@@ -14,6 +14,7 @@
       "note": "quasi-harmonic, ice infrared band centres, no fitting",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": 1.0346153846153847
     },
     {
@@ -27,6 +28,7 @@
       "note": "",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 1.1286713286713288
     }
   ],

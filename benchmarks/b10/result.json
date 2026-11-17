@@ -14,6 +14,7 @@
       "note": "R from the measured electro-optic settings, ideal optics",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": 1.0655913978494622
     },
     {
@@ -27,6 +28,7 @@
       "note": "R from the measured electro-optic settings, ideal optics",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": 0.9880952380952381
     },
     {
@@ -40,6 +42,7 @@
       "note": "R from the measured electro-optic settings, ideal optics",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": null
     },
     {
@@ -53,6 +56,7 @@
       "note": "equality for pure states; the measured shortfall is imperfect optics",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": 1.0309278350515465
     }
   ],

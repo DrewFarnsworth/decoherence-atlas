@@ -14,6 +14,7 @@
       "note": "Debye model, theta = 470 K (calorimetric), no fitting",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": 1.030162703379224
     },
     {
@@ -27,6 +28,7 @@
       "note": "lower end of quoted Debye temperatures",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 0.9838548185231539
     }
   ],

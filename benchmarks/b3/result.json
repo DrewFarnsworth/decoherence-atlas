@@ -14,6 +14,7 @@
       "note": "ionization energy not reported; 7 eV assumed (typical large organic)",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": null
     },
     {
@@ -27,6 +28,7 @@
       "note": "far below threshold: 300 K photons (~10 um) cannot resolve ~100 nm",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": null
     },
     {
@@ -40,6 +42,7 @@
       "note": "first ionization threshold 2.53 eV from the paper",
       "scored": true,
       "status": "pass",
+      "outside_bound": true,
       "ratio": null
     },
     {
@@ -53,6 +56,7 @@
       "note": "far below threshold: 300 K photons (~10 um) cannot resolve ~100 nm",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": null
     }
   ],

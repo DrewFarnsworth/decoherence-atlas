@@ -41,6 +41,7 @@ class Check:
     note: str = ""
     scored: bool = True            # False for sensitivity runs and side results
     status: str = field(default="", init=False)
+    outside_bound: bool = field(default=False, init=False)   # passes only by the 30% allowance
     ratio: Optional[float] = field(default=None, init=False)
 
     def evaluate(self) -> "Check":
@@ -60,6 +61,8 @@ class Check:
             if hi is not None and x > hi * (1 + TOLERANCE):
                 ok = False
                 self.ratio = x / hi
+            if ok and ((lo is not None and x < lo) or (hi is not None and x > hi)):
+                self.outside_bound = True
         self.status = "pass" if ok else "fail"
         if not self.scored:
             self.status = "info (" + self.status + ")"

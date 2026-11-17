@@ -14,6 +14,7 @@
       "note": "five-molecule cluster, static disorder, no fitting",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": 0.9875
     },
     {
@@ -27,6 +28,7 @@
       "note": "",
       "scored": false,
       "status": "info (fail)",
+      "outside_bound": false,
       "ratio": 14.8625
     },
     {
@@ -40,6 +42,7 @@
       "note": "",
       "scored": false,
       "status": "info (fail)",
+      "outside_bound": false,
       "ratio": 1.6
     },
     {
@@ -53,6 +56,7 @@
       "note": "needs molecular dynamics; not modelled",
       "scored": true,
       "status": "not computed",
+      "outside_bound": false,
       "ratio": null
     }
   ],

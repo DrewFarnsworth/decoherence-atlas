@@ -14,6 +14,7 @@
       "note": "paper's own theory gave 7.3; measured ± 0.7",
       "scored": true,
       "status": "fail",
+      "outside_bound": false,
       "ratio": 1.9847826086956526
     },
     {
@@ -27,6 +28,7 @@
       "note": "checks that this code reproduces the published model",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 1.2506849315068496
     },
     {
@@ -40,6 +42,7 @@
       "note": "paper's own theory gave 9.2; measured ± 1.2",
       "scored": true,
       "status": "fail",
+      "outside_bound": false,
       "ratio": 1.425
     },
     {
@@ -53,6 +56,7 @@
       "note": "checks that this code reproduces the published model",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 1.2391304347826089
     },
     {
@@ -66,6 +70,7 @@
       "note": "paper's own theory gave 13.8; measured ± 1.6",
       "scored": true,
       "status": "fail",
+      "outside_bound": false,
       "ratio": 1.529906542056075
     },
     {
@@ -79,6 +84,7 @@
       "note": "checks that this code reproduces the published model",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 1.186231884057971
     },
     {
@@ -92,6 +98,7 @@
       "note": "paper's own theory gave 7.9; measured ± 1.2",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": 1.1814814814814816
     },
     {
@@ -105,6 +112,7 @@
       "note": "checks that this code reproduces the published model",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 1.2113924050632912
     },
     {
@@ -118,6 +126,7 @@
       "note": "paper's own theory gave 16.0; measured ± 2.0",
       "scored": true,
       "status": "fail",
+      "outside_bound": false,
       "ratio": 1.4333333333333336
     },
     {
@@ -131,6 +140,7 @@
       "note": "checks that this code reproduces the published model",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 1.1825
     },
     {
@@ -144,6 +154,7 @@
       "note": "paper's own theory gave 11.3; measured ± 1.7",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": 1.171304347826087
     },
     {
@@ -157,6 +168,7 @@
       "note": "checks that this code reproduces the published model",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 1.1920353982300884
     },
     {
@@ -170,6 +182,7 @@
       "note": "paper's own theory gave 11.8; measured ± 1.6",
       "scored": true,
       "status": "fail",
+      "outside_bound": false,
       "ratio": 1.3296296296296295
     },
     {
@@ -183,6 +196,7 @@
       "note": "checks that this code reproduces the published model",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 1.2169491525423728
     },
     {
@@ -196,6 +210,7 @@
       "note": "paper's own theory gave 12.4; measured ± 1.9",
       "scored": true,
       "status": "pass",
+      "outside_bound": false,
       "ratio": 1.1612403100775195
     },
     {
@@ -209,6 +224,7 @@
       "note": "checks that this code reproduces the published model",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 1.2080645161290322
     },
     {
@@ -222,6 +238,7 @@
       "note": "paper's own theory gave 11.5; measured ± 1.6",
       "scored": true,
       "status": "fail",
+      "outside_bound": false,
       "ratio": 1.3415094339622642
     },
     {
@@ -235,6 +252,7 @@
       "note": "checks that this code reproduces the published model",
       "scored": false,
       "status": "info (pass)",
+      "outside_bound": false,
       "ratio": 1.2365217391304348
     }
   ],
