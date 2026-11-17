@@ -24,42 +24,24 @@ Run: python toys/bridge.py
 """
 
 import math
-import warnings
 
 import numpy as np
-from scipy.linalg import sqrtm
 from scipy.stats import norm
 
-LOG2 = math.log(2)
-warnings.filterwarnings("ignore", message="Matrix is singular")
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from bridge_lib import h2, trace_distance, holevo  # noqa: E402
+from bridge_lib import fidelity as _fid  # noqa: E402
 
 
-# ---------- quantum records ----------
 def fidelity(r, s):
-    """Root fidelity F = Tr sqrt(sqrt(r) s sqrt(r))."""
-    sr = sqrtm(r)
-    return float(np.real(np.trace(sqrtm(sr @ s @ sr))))
+    return float(_fid(r, s))
 
 
-def trace_distance(r, s):
-    return float(0.5 * np.sum(np.abs(np.linalg.eigvalsh(r - s))))
-
-
-def entropy_bits(r):
-    w = np.linalg.eigvalsh(r)
-    w = w[w > 1e-15]
-    return float(-np.sum(w * np.log2(w)))
-
-
-def holevo(priors, states):
-    avg = sum(p * s for p, s in zip(priors, states))
-    return entropy_bits(avg) - sum(p * entropy_bits(s) for p, s in zip(priors, states))
-
-
-def h2(x):
-    if x <= 0 or x >= 1:
-        return 0.0
-    return -x * math.log2(x) - (1 - x) * math.log2(1 - x)
+def trace_distance_f(r, s):
+    return float(trace_distance(r, s))
 
 
 def marker_states(c):
@@ -82,7 +64,7 @@ def toy1():
         for q in (0.0, 0.5, 0.9):
             mL, mR = marker_states(c)
             rL, rR = depolarize(mL, q), depolarize(mR, q)
-            J, D = fidelity(rL, rR), trace_distance(rL, rR)
+            J, D = fidelity(rL, rR), trace_distance_f(rL, rR)
             chi = holevo([0.5, 0.5], [rL, rR])
             acc = 1 - h2((1 + D) / 2)
             rows.append((c, q, J, D, chi, acc))
@@ -91,7 +73,7 @@ def toy1():
     # equality above is special to pairs read through the same noise; unequal noise makes it strict
     mL, mR = marker_states(0.42)
     rL, rR = depolarize(mL, 0.0), depolarize(mR, 0.7)
-    J, D = fidelity(rL, rR), trace_distance(rL, rR)
+    J, D = fidelity(rL, rR), trace_distance_f(rL, rR)
     print(f"  unequal noise (0 and 0.7) at c = 0.42: J = {J:.3f}, D = {D:.3f}, J^2+D^2 = {J*J + D*D:.3f} (< 1)")
     assert J * J + D * D < 1 - 1e-3 and 1 - J <= D + 1e-9 <= math.sqrt(1 - J * J) + 2e-9
     # check against the pure-state conversion
