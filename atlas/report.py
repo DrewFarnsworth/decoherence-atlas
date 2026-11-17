@@ -14,11 +14,19 @@ from __future__ import annotations
 
 import json
 import math
+import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Optional
 
 TOLERANCE = 0.30
+
+# See run_all.py: keep printing safe on Windows consoles (cp1252).
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
 
 
 @dataclass
@@ -101,7 +109,7 @@ def write_result(folder, benchmark: str, title: str, checks, points, notes=""):
         "notes": notes,
     }
     path = Path(folder) / "result.json"
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print_summary(data)
     return data
 
