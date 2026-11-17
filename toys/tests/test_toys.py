@@ -62,7 +62,7 @@ def test_toy7_site_basis_reproduces_toy4():
     import toy4_graph_domains as T4
     import toy7_parts as T7
     V, blocks = T4.graph("G1", 0.2)
-    P = T7.propagator(V.copy(), 1.0, 3.0)
+    P = T7.propagator(V.copy(), T7.coupling_ops("local", 8), 1.0, 3.0)
     I8 = np.eye(8, dtype=complex)
     mine = T7.domains_for(T7.in_basis(T7.evolve_basis(P, I8), I8))
     ref = T4.analyse(T4.records(V, np.zeros(8), 1.0, 3.0), blocks, ["trace"])["trace"]
@@ -75,3 +75,17 @@ def test_checks_fail_loudly_when_broken(monkeypatch):
     monkeypatch.setattr(L, "fidelity", lambda r, s: 1.01 * real(r, s))
     with pytest.raises(L.CheckFailed):
         T.explicit_check([0.9, 0.9], 1)
+
+
+def test_toy7_couplings():
+    import toy7_parts as T7
+    for kind in ("local", "collective", "random"):
+        ops = T7.coupling_ops(kind, 8)
+        assert all(np.allclose(A, A.conj().T) for A in ops)
+    # trace preserved under every coupling
+    import toy4_graph_domains as T4
+    V, _ = T4.graph("G1", 0.2)
+    for kind in ("local", "collective", "random"):
+        P = T7.propagator(V.copy(), T7.coupling_ops(kind, 8), 1.0, 2.0)
+        r = T7.evolve_basis(P, np.eye(8, dtype=complex))
+        assert np.allclose(np.trace(r, axis1=1, axis2=2), 1.0, atol=1e-10)
