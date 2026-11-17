@@ -33,6 +33,9 @@ from scipy.stats import spearmanr
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bridge_lib as L  # noqa: E402
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from atlas.stamp import workers  # noqa: E402
 import toy4_graph_domains as T4  # noqa: E402
 
 N_RANDOM_BASES = 20
@@ -190,6 +193,12 @@ def run_point(gname, v, W, gamma, t, kind="local", cseed=0):
     return out, ov, opt
 
 
+def _point_job(item):
+    kind, cseed, p = item
+    res, ov, opt = run_point(*p, kind=kind, cseed=cseed)
+    return res, ov, opt
+
+
 def points(quick):
     if quick:
         return [("local", 0, ("G1", 0.2, 0.0, 1.0, 3.0)), ("collective", 0, ("G1", 0.2, 0.0, 1.0, 3.0)),
@@ -233,8 +242,11 @@ def main(quick=False):
     out.say("Checks passed: every basis unitary to 1e-10; the site basis reproduces toy 4; the pointer basis approaches the site basis at large gamma.")
 
     rows_dom, rows_ov, rows_prior, results = [], [], [], {}
-    for kind, cseed, p in points(quick):
-        res, ov, opt = run_point(*p, kind=kind, cseed=cseed)
+    pts = points(quick)
+    from multiprocessing import Pool
+    with Pool(workers()) as pool:
+        computed = pool.map(_point_job, pts, chunksize=1)
+    for (kind, cseed, p), (res, ov, opt) in zip(pts, computed):
         results[(kind, cseed) + p] = res
         rows_ov.append([kind, cseed] + list(p) + [ov["site"], ov["exciton"], ov["coupling"], bool(opt.success), float(opt.fun)])
         for name, r in res.items():

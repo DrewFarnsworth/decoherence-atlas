@@ -28,6 +28,9 @@ from scipy.linalg import expm
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bridge_lib as L  # noqa: E402
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from atlas.stamp import workers  # noqa: E402
+
 V_LIST = [0.0, 0.05, 0.2, 1.0]
 W_LIST = [0.0, 0.5, 2.0]
 G_LIST = [0.0, 0.1, 1.0, 10.0, 100.0]
@@ -310,7 +313,7 @@ def main(quick=False):
                     for s in G4_SEEDS:
                         jobs.append(("G4", 0.0, s, W, g, t, ["trace"]))
     t0 = time.time()
-    with Pool(2) as pool:
+    with Pool(workers()) as pool:
         results = pool.map(point_job, jobs, chunksize=4)
     out.say(f"{len(jobs)} parameter points analysed in {time.time() - t0:.0f} s.")
 

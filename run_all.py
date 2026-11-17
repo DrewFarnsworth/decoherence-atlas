@@ -3,6 +3,10 @@
     python run_all.py            run all ten (B4 and B8 take a few minutes each)
     python run_all.py b1 b5      run only some
     python run_all.py --report   rebuild the scoreboard from saved results, no runs
+    python run_all.py --force    rerun even benchmarks whose code has not changed
+
+A benchmark whose code (its run.py and the shared atlas modules) has not changed since its last
+successful run is skipped, and its saved result is kept.
 
 Writes results/scoreboard.md (readable) and results/atlas_points.json (every
 benchmark's place on the common axes, for the plots).
@@ -26,12 +30,22 @@ for stream in (sys.stdout, sys.stderr):
 NAMES = [f"b{i}" for i in range(1, 11)]
 
 
-def run(names):
+def run(names, force=False):
+    from atlas.stamp import fingerprint, is_fresh, write_stamp
+    shared = [ROOT / "atlas" / f for f in ("constants.py", "report.py", "scattering.py")]
     for n in names:
+        folder = ROOT / "benchmarks" / n
+        fp = fingerprint([folder / "run.py"] + shared)
+        stamp = folder / ".stamp"
+        if not force and is_fresh(stamp, fp, must_exist=[folder / "result.json"]):
+            print(f"\n=== {n.upper()} === unchanged since its last run: skipped (use --force to rerun)")
+            continue
         t = time.time()
         print(f"\n=== {n.upper()} ===", flush=True)
-        r = subprocess.run([sys.executable, str(ROOT / "benchmarks" / n / "run.py")])
+        r = subprocess.run([sys.executable, str(folder / "run.py")])
         print(f"({n.upper()} finished in {time.time() - t:.0f} s, exit code {r.returncode})")
+        if r.returncode == 0:
+            write_stamp(stamp, fp)
 
 
 def fmt(x):
@@ -89,5 +103,5 @@ def report():
 if __name__ == "__main__":
     args = [a.lower() for a in sys.argv[1:]]
     if "--report" not in args:
-        run([a for a in args if a in NAMES] or NAMES)
+        run([a for a in args if a in NAMES] or NAMES, force="--force" in args)
     report()
