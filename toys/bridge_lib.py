@@ -55,8 +55,24 @@ def psd_sqrt(rho):
     return (v * np.sqrt(w)[..., None, :]) @ v.conj().swapaxes(-1, -2)
 
 
+def _pure_vector(rho, tol=1e-12):
+    """The state vector if rho is pure (rank 1 to within tol), else None."""
+    w, v = np.linalg.eigh((rho + rho.conj().T) / 2)
+    if w[-1] >= 1 - tol and np.all(np.abs(w[:-1]) <= tol):
+        return v[:, -1]
+    return None
+
+
 def fidelity(rho, sigma):
-    """Root fidelity F = Tr sqrt(sqrt(rho) sigma sqrt(rho)). Works on stacks (..., d, d)."""
+    """Root fidelity F = Tr sqrt(sqrt(rho) sigma sqrt(rho)). Works on stacks (..., d, d).
+
+    For a single pair where either state is pure, F = sqrt(<psi|sigma|psi>) exactly: the general
+    route leaves an error of about 1e-8 from square roots of zero eigenvalues."""
+    if np.ndim(rho) == 2:
+        for a, b in ((rho, sigma), (sigma, rho)):
+            v = _pure_vector(a)
+            if v is not None:
+                return float(np.sqrt(max(0.0, np.real(v.conj() @ b @ v))))
     s = psd_sqrt(rho)
     m = s @ sigma @ s
     w = np.linalg.eigvalsh((m + m.conj().swapaxes(-1, -2)) / 2)
@@ -336,3 +352,73 @@ def build_flags_md():
     lines += [f"| {r['toy']} | {r['choice']} | {r['value']} | {r['why']} |" for r in rows]
     (TOYS / "FLAGS.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return len(rows)
+
+
+# ---------------------------------------------------------------- spec revision of 17 Nov: joins, subset curves, records
+# Record threshold defaults (flagged): a correlation marks an event only if its pattern's JOINT record
+# has distinguishability D >= D_MIN and is held redundantly in at least R_MIN fragments (Zurek's R_delta).
+# J_e is never filtered by the threshold: it always uses every dependent record, jointly.
+D_MIN = 0.01
+DELTA_R = 0.1
+R_MIN_LIST = (1, 2, 5)
+
+
+def exchange_join(rho1, rho2):
+    """Join for an exchange question (which photon is which): Tr(rho1 rho2).
+
+    The two alternatives are the pair and the swapped pair; with environments explicit, the
+    overlap of the two global states is exactly Tr(rho1 rho2) (c^2 for pure photons). Which-path
+    questions keep J = |<psi_1|psi_2>|."""
+    return overlap_trace(rho1, rho2)
+
+
+def subset_curve(fid_of_subset, n_records, k_max=None, n_random=200, rng=None):
+    """J_e^(k): the lowest fidelity reachable from any k of n dependent records.
+
+    fid_of_subset(tuple_of_indices) -> fidelity between the two alternatives' records restricted to
+    that subset. Exact minima for k <= 3 (every subset); above 3, n_random random subsets, reporting
+    the minimum and the median. Returns rows (k, minimum, median, exact?) and k_half (smallest k with
+    J <= 0.5, or None)."""
+    rng = rng or np.random.default_rng(0)
+    k_max = n_records if k_max is None else min(k_max, n_records)
+    rows, k_half = [], None
+    for k in range(1, k_max + 1):
+        if k <= 3 or math.comb(n_records, k) <= n_random:
+            subs = list(itertools.combinations(range(n_records), k))
+            exact = True
+        else:
+            subs = [tuple(sorted(rng.choice(n_records, k, replace=False))) for _ in range(n_random)]
+            exact = False
+        vals = np.array([fid_of_subset(s) for s in subs])
+        rows.append((k, float(vals.min()), float(np.median(vals)), exact))
+        if k_half is None and vals.min() <= 0.5:
+            k_half = k
+    return rows, k_half
+
+
+def redundancy(info_of_fragment, n_frag, total_info, delta=DELTA_R):
+    """Zurek's R_delta from single-unit fragments: the number of disjoint units that each alone hold at
+    least (1 - delta) of total_info (a lower bound on R_delta; flagged)."""
+    if total_info <= 0:
+        return 0
+    return int(sum(1 for i in range(n_frag) if info_of_fragment(i) >= (1 - delta) * total_info - 1e-12))
+
+
+def is_event(D_joint, R_delta, D_min=D_MIN, R_min=1):
+    """The record threshold, applied to a pattern's joint record."""
+    return bool(D_joint >= D_min and R_delta >= R_min)
+
+
+def joint_inheritance(priors, states_joint, states_each):
+    """Inheritance from many events into one domain R.
+
+    priors: probabilities of the joint alternatives a = (a_1..a_n), shape (n_alt,)
+    states_joint: R's state for each joint alternative (list of density matrices)
+    states_each: for each event e, a function giving (marginal prior over a_e, R's states per a_e)
+    Returns (joint chi, sum of per-event chi, signed over-count = sum - joint). A negative over-count
+    means the events' records hold more together than apart (synergy)."""
+    joint = holevo(priors, states_joint)
+    each = 0.0
+    for p_e, st_e in states_each:
+        each += holevo(p_e, st_e)
+    return joint, each, each - joint

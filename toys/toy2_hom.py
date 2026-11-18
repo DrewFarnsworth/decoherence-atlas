@@ -145,6 +145,15 @@ def main():
              "J_phys := sqrt(E |<psi_1|psi_2>|^2); also report E |<psi_1|psi_2>|",
              "the spec does not define J_phys for independent environments; with this definition "
              "J_phys^2 = Tr(rho_1 rho_2) holds by construction, so the check is a test of the code, not of physics")
+    out.flag("exchange join (adopted 17 Nov)", "J_e for 'which photon is which' = Tr(rho1 rho2) (|c|^2 for pure photons); "
+             "which-path questions keep |c|", "the overlap of the pair and the swapped pair, with environments explicit")
+    out.flag("case b separate fidelities", "photons alone: F of the swapped two-photon states = F(rho, rho)^2, since both are rho x rho "
+             "and fidelity multiplies over tensor products; environments alone: 1 by construction (same trajectory "
+             "distribution in both alternatives)", "the spec asks for each separately")
+    out.flag("case d recoil geometries", "one-sided: one recorded kick dp = q = 2 hbar k (the spec's factor); symmetric splitter: "
+             "the two reflections push opposite faces, net dp = 0; no angle-of-incidence factors", "adopted 17 Nov: both, flagged")
+    out.flag("case d loss model", "equal loss l at both output ports; coincidences counted only when both photons arrive",
+             "the spec says absorption at both ports, recorded in a bath")
     out.flag("case c Sigma and tau_c", "swept as ratios only; not taken from B9",
              "B9 holds Gamma (T1) and the measured visibilities but no independent spectral-diffusion data; "
              "fitting Sigma to the visibility is forbidden by the spec")
@@ -166,10 +175,11 @@ def main():
                 L.check_pair(c, math.sqrt(1 - c * c), pure=True)
                 L.check_monotone(Jx, c, label="spectrometer join >= J_phys")
                 L.check_monotone(Jt, c, label="time-tag join >= J_phys")
-                rows.append([r, dw, st, c, (1 - c * c) / 2, Jx, Dx, Jt, Dt])
+                rows.append([r, dw, st, c, c * c, (1 - c * c) / 2, Jx, Dx, Jt, Dt])
     out.table("a_pure_gaussian", {**HEADER, "photons": "pure Gaussian amplitudes", "time": "delay tau = st / sigma_1",
                                   "channels": "J_phys = |c|; spectrometer bin 0.1 sigma_1; time tagger jitter 0.05 / sigma_1"},
-              ["sigma2/sigma1", "dw/sigma1", "sigma1 tau", "|c| = J_phys", "P_c", "J^X spectrometer", "D^X spectrometer",
+              ["sigma2/sigma1", "dw/sigma1", "sigma1 tau", "|c| (which-path join)", "|c|^2 (exchange join = M)", "P_c",
+               "J^X spectrometer", "D^X spectrometer",
                "J^X time tag", "D^X time tag"], rows)
 
     rows = []
@@ -198,23 +208,65 @@ def main():
         Jenv, err, mean_abs = explicit_environment_join(g, rng=rng)
         L.check(abs(Jenv ** 2 - P) < max(5 * err, 2e-3) + 2e-3,
                 f"case b: J_phys^2 from the explicit environment {Jenv**2} vs Tr(rho^2) {P}")
-        rows.append([g, F, math.sqrt(P), Jenv, mean_abs, M_formula, P])
+        Je_joint = Jenv ** 2                        # exchange join over photons and their environments, jointly
+        L.check(abs(Je_joint - M_formula) < max(5 * err, 2e-3) + 2e-3, "case b: J_e (exchange) = M = Tr(rho1 rho2)")
+        F_photons = F * F                          # swapped pair is rho x rho again; fidelity multiplies over tensor products
+        L.check(abs(F_photons - 1) < 1e-6, "case b: photons alone (swapped) are identical")
+        rows.append([g, F, math.sqrt(P), Je_joint, 1.0, 1.0, mean_abs, M_formula, P])
     L.check(abs(rows[0][-1] - 1) < 1e-3, "case b: M = 1 at gamma* = 0")
     out.table("b_key_table", {**HEADER, "photons": "both from one emitter with pure dephasing gamma*; identical mixed states",
                               "time": "whole wave packets", "seed": SEED},
-              ["gamma*/Gamma", "F(rho1, rho2)", "sqrt Tr(rho1 rho2)", "J_phys (explicit env, rms overlap)",
-               "E|overlap| (explicit env)", "M = T2/2T1", "Tr(rho^2) on grid"], rows,
-              note="Candidates for the physical join of mixed records, side by side. Fidelity says the photons "
-                   "are identical (1) at every dephasing; the dip says otherwise.")
-    for g, F, sq, Je, ma, M, P in rows:
-        out.say(f"Case b, gamma*/Gamma = {g}: F = {F:.4f}, sqrt Tr = {sq:.4f}, explicit-environment J = {Je:.4f}, "
-                f"E|overlap| = {ma:.4f}, M = {M:.4f}")
+              ["gamma*/Gamma", "F(rho1, rho2)", "sqrt Tr(rho1 rho2)", "J_e exchange, joint (explicit env)",
+               "J_e photons alone", "J_e environments alone", "E|overlap| (explicit env)", "M = T2/2T1", "Tr(rho^2) on grid"], rows,
+              note="Candidates side by side. The question is which photon is which (exchange). Taken jointly over the photons "
+                   "and their environments, J_e = Tr(rho1 rho2) = M; the photons alone and the environments alone each give 1. "
+                   "Adopted 17 Nov: the exchange join is Tr(rho1 rho2); which-path questions keep |c|.")
+    for g, F, sq, Je, Jp, Jenvs, ma, M, P in rows:
+        out.say(f"Case b, gamma*/Gamma = {g}: F = {F:.4f}, joint exchange J_e = {Je:.4f}, photons alone 1, environments alone 1, "
+                f"M = {M:.4f}")
     # Tr(rho1 rho2) <= F^2 for unequal mixed states
     for g1, g2, det in [(0.1, 1.0, 0.0), (0.5, 0.5, 0.8), (0.0, 2.0, 1.5)]:
         r1, _, _ = dephased_matrix(g1, n=400)
         r2, _, _ = dephased_matrix(g2, n=400, detuning=det)
         L.check(L.overlap_trace(r1, r2) <= float(L.fidelity(r1, r2)) ** 2 + 1e-9, "Tr(rho1 rho2) <= F^2")
     out.say("Tr(rho1 rho2) <= F(rho1, rho2)^2 checked on three unequal mixed pairs.")
+
+    # ---- case d: an imperfect splitter
+    rows = []
+    for ell in (0.0, 0.05, 0.2):
+        # equal loss at both ports, recorded in a bath ("lost or not"); the record does not depend on which photon
+        M = 1.0
+        pc_dist = 0.5 * (1 - ell) ** 2
+        pc = pc_dist * (1 - M)
+        Je = M * 1.0                                   # loss records identical for both exchange alternatives
+        Vcoinc = (pc_dist - pc) / pc_dist
+        L.check(abs(Vcoinc - Je) < 1e-12, "case d, loss: coincidence visibility unchanged")
+        rows.append(["loss and heating", f"loss {ell}", 1.0, Je, Vcoinc, "lost-or-not record, independent of which photon"])
+    lam = 1.0
+    for geom in ("one-sided (one recorded kick)", "symmetric splitter (opposite faces)"):
+        for xr in np.logspace(-6, -1, 6):
+            dp_over_hbar = (2 * 2 * math.pi / lam) if geom.startswith("one") else 0.0     # q = 2 hbar k, or net 0
+            overlap = math.exp(-(dp_over_hbar * xr * lam) ** 2 / 2)
+            Je = 1.0 * overlap
+            rows.append(["mirror recoil", f"{geom}; dx/lambda = {xr:.0e}", 1.0, Je, Je,
+                         "mirror states for both-reflected vs both-transmitted overlap exp(-dp^2 dx^2 / 2 hbar^2)"])
+    for R in (0.3, 0.4, 0.5, 0.6, 0.7):
+        T = 1 - R
+        M = 1.0
+        pc_dist = R * R + T * T
+        pc = R * R + T * T - 2 * R * T * M
+        Vmax = 2 * R * T / (R * R + T * T)
+        V = (pc_dist - pc) / pc_dist
+        L.check(abs(V - Vmax * M) < 1e-12, "case d, unequal split: V = V_max J_e")
+        rows.append(["unequal split", f"R = {R}", Vmax, M, V, "no record; V_max = 2RT/(R^2 + T^2)"])
+    out.table("d_imperfect_splitter", {**HEADER, "photons": "identical pure photons (M = 1) unless stated",
+                                       "question": "which photon is which (exchange)"},
+              ["effect", "setting", "V_max", "J_e", "V (coincidences only)", "note"], rows,
+              note="Recoil geometry is flagged: with a symmetric splitter the two reflections push opposite faces, so "
+                   "'both reflected' and 'both transmitted' leave the same mirror momentum and no record.")
+    out.say("Case d: loss leaves J_e and the coincidence visibility unchanged; recoil enters only in the one-sided geometry "
+            f"(factor {math.exp(-(4 * math.pi * 0.1) ** 2 / 2):.3f} at dx/lambda = 0.1, 1 to 1e-10 at 1e-6); "
+            "an unequal split lowers V_max to 2RT/(R^2 + T^2) with J_e unchanged.")
 
     # ---- case c
     rows = []

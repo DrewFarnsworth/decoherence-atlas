@@ -19,11 +19,13 @@ Approximate full-run times on a laptop:
 
 | Toy | Time |
 |---|---|
-| 1 markers, 2 HOM, 6 radical pair | under 30 s each |
+| 1 markers, 1b chain, 2 HOM, 6 radical pair | under 30 s each |
 | 5 QED scattering | about a minute |
 | 3 superradiance | about 4 min |
 | 4 graph domains | not yet timed; try `--quick` first |
 | 7 whose parts | 30 min or more (reduced sweep; see FLAGS.md) |
+| 8 monitored web | not yet timed; perhaps 10 to 40 min depending on cores (`--L20` adds much more) |
+| 8b codes and time crystal | a few minutes (`--L20` adds the time crystal at L = 20, slow) |
 
 ## Handing results back
 

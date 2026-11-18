@@ -89,3 +89,32 @@ def test_toy7_couplings():
         P = T7.propagator(V.copy(), T7.coupling_ops(kind, 8), 1.0, 2.0)
         r = T7.evolve_basis(P, np.eye(8, dtype=complex))
         assert np.allclose(np.trace(r, axis1=1, axis2=2), 1.0, atol=1e-10)
+
+
+def test_exchange_join_is_overlap_squared_for_pure_states():
+    rng = np.random.default_rng(3)
+    for _ in range(5):
+        a = rng.normal(size=4) + 1j * rng.normal(size=4); a /= np.linalg.norm(a)
+        b = rng.normal(size=4) + 1j * rng.normal(size=4); b /= np.linalg.norm(b)
+        assert L.exchange_join(L.dm(a), L.dm(b)) == pytest.approx(abs(np.vdot(a, b)) ** 2, abs=1e-12)
+
+
+def test_toy1b_chain_cases():
+    import toy1b_chain as T
+    kws = [("A", {}), ("B", {"cs": [0.9, 0.7, 0.5]}), ("C", {"c": 0.6}), ("D", {"phi": 1.0}),
+           ("E", {"cP": 0.6, "measure": True}), ("F", {"cP": 0.6, "measure": True}), ("G", {"R": 0.3})]
+    for case, kw in kws:
+        ch, vecs, nq, Je, Jphys, Jout, V, Vmax = T.analyse(case, **kw)
+        assert 0 <= Jphys <= Je + 1e-10 <= 1 + 1e-9          # more records never join more
+        assert V <= Vmax * Je + 1e-9                          # fringes never exceed what the records allow
+    assert T.port_bhattacharyya(0.5) == pytest.approx(1.0)
+
+
+def test_toy8_checks():
+    import toy8_web as T
+    T.run_checks(Quiet())
+
+
+def test_toy8b_checks():
+    import toy8b_structured as T
+    T.run_checks(Quiet())
