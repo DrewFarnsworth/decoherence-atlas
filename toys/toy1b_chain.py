@@ -157,6 +157,11 @@ def build(case, **kw):
             ch.event("measure P", ch.add_qubits(1), ["entangle"], ("measure", (0, "Z" if case == "E" else "X")))
     elif case == "G":
         pass
+    elif case == "H":                                     # convergence: two inputs, one soma output
+        c = kw["c"]
+        ch.event("input 1", ch.add_qubits(1), [], ("fresh", marker(c)))
+        ch.event("input 2", ch.add_qubits(1), [], ("fresh", lambda a: marker(c)(1 - a)))
+        ch.event("soma", ch.add_qubits(1), ["input 1", "input 2"], ("fresh", same([0, 1])))
     return ch
 
 
@@ -191,6 +196,10 @@ def main():
     out.flag("record threshold", f"applied to each event's JOINT output: D >= {L.D_MIN}; R_delta from single output qubits "
              f"each holding >= (1 - {L.DELTA_R}) of the event's joint information (a lower bound), also against H_S = 1 bit; "
              "R_min in {1, 2, 5}", "adopted 17 Nov: the threshold labels events and never filters J_e")
+    out.flag("case H, convergence (revision 4.6, open problem 1)", "two input events record the path with overlap c each "
+             "(mirrored, so the inputs always sum to 1); the soma writes the same output for both paths; reported: the soma's own "
+             "output (J = 1, what a domain reading only the soma registers) against its J_e over its past (c^2)",
+             "the provisional answer: under J_e a soma does not join its inputs while their records remain in its past")
     out.flag("inheritance domain", "an observer holding every record in the end event's past", "the spec asks for the joint quantity per domain")
 
     rows, chain_rows = [], []
@@ -262,6 +271,19 @@ def main():
         ch, vecs, nq, Je, Jp, Jo, V, Vm = analyse("G", R=float(R))
         L.check(abs(V - Vm) < 1e-9 and abs(Je - 1) < TOL, "case G: V = V_max, J_e = 1")
         rows.append(["G unequal split", f"R = {R:.1f}", Je, 1.0, Jp, Jo, V, Vm])
+    # H: convergence (a soma); revision 4.6, open problem 1 (lumping), provisional answer
+    for c in (0.0, 0.6, 0.9):
+        ch, vecs, nq, Je, Jp, Jo, V, Vm = analyse("H", c=c)
+        J_soma_out = fid_over(vecs, nq, [2])
+        J_soma_e = fid_over(vecs, nq, [0, 1, 2])
+        L.check(abs(J_soma_out - 1) < TOL, "case H: the soma's own output is the same for both paths (joins)")
+        L.check(abs(J_soma_e - c * c) < TOL, "case H: the soma's J_e is the product of its inputs' overlaps")
+        rows.append(["H convergence (soma)", f"input overlap c = {c}; soma's own output J = {J_soma_out:.3f}; "
+                     f"soma's J_e = {J_soma_e:.3f}", Je, c * c, Jp, Jo, V, Vm])
+        if c == 0.6:
+            for k, nm in enumerate(("input 1", "input 2", "soma")):
+                v, n = ch.branches(upto=k)
+                chain_rows.append(["H (c = 0.6)", nm, fid_over(v, n, list(range(n))), c ** min(k + 1, 2), fid_over(v, n, [n - 1])])
     # J = V/V_max recovers J_e wherever V_max > 0
     for r in rows:
         if r[7] > 0 and not r[0].startswith("E") and not r[0].startswith("F"):
@@ -304,9 +326,9 @@ def main():
               note="Signed: a negative over-count means records hold more together than apart (synergy, case D).")
     for r in inh_rows:
         out.say(f"Inheritance, case {r[0]}: joint {r[1]:.4f} bits; summing per event over-counts by {r[3]:+.4f}, per record qubit by {r[5]:+.4f}")
-    out.say("All checks passed: cases A-G to 1e-10; J_e never rises along a chain; J = V/V_max recovers J_e; case D's separate "
+    out.say("All checks passed: cases A-H to 1e-10; J_e never rises along a chain; J = V/V_max recovers J_e; case D's separate "
             "fidelities (1) exceed the joint |cos(phi/2)|; measuring P changes neither J_e nor V; the eraser recovers fringes "
-            "within each outcome, out of phase.")
+            "within each outcome, out of phase; a soma's own output joins its inputs (J = 1) while its J_e stays c^2.")
     out.finish()
 
 

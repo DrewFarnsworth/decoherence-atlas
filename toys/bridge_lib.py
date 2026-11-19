@@ -372,6 +372,24 @@ def exchange_join(rho1, rho2):
     return overlap_trace(rho1, rho2)
 
 
+def swap_join(rho1, rho2):
+    """The exchange join computed the long way (revision 4.6): purify each particle with its own environment,
+    then take the fidelity of the pair and the swapped pair (particles swapped, environments not).
+    Equals Tr(rho1 rho2); kept as an independent check of exchange_join."""
+    def purify(rho):
+        w, v = np.linalg.eigh((rho + rho.conj().T) / 2)
+        return v * np.sqrt(np.clip(w, 0, None))          # rows: particle, columns: environment
+    A, B = purify(np.asarray(rho1, complex)), purify(np.asarray(rho2, complex))
+    psi = np.einsum("ae,bf->abef", A, B)
+    return float(abs(np.vdot(psi, np.swapaxes(psi, 0, 1))))
+
+
+def registered_join(rho_i, rho_j, channel):
+    """J^X = F(Phi_X rho_i, Phi_X rho_j): the join as registered by a domain X that sees the records
+    only through the channel Phi_X (a function on density matrices). Never below F(rho_i, rho_j)."""
+    return float(fidelity(channel(rho_i), channel(rho_j)))
+
+
 def subset_curve(fid_of_subset, n_records, k_max=None, n_random=200, rng=None):
     """J_e^(k): the lowest fidelity reachable from any k of n dependent records.
 

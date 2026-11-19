@@ -216,7 +216,7 @@ def main():
     L.check(abs(rows[0][-1] - 1) < 1e-3, "case b: M = 1 at gamma* = 0")
     out.table("b_key_table", {**HEADER, "photons": "both from one emitter with pure dephasing gamma*; identical mixed states",
                               "time": "whole wave packets", "seed": SEED},
-              ["gamma*/Gamma", "F(rho1, rho2)", "sqrt Tr(rho1 rho2)", "J_e exchange, joint (explicit env)",
+              ["gamma*/Gamma", "F(rho1, rho2)", "sqrt Tr(rho1 rho2)", "J_e exchange: pair vs swapped pair, environments explicit",
                "J_e photons alone", "J_e environments alone", "E|overlap| (explicit env)", "M = T2/2T1", "Tr(rho^2) on grid"], rows,
               note="Candidates side by side. The question is which photon is which (exchange). Taken jointly over the photons "
                    "and their environments, J_e = Tr(rho1 rho2) = M; the photons alone and the environments alone each give 1. "

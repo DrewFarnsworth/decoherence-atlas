@@ -31,6 +31,7 @@ Run: python toys/toy8b_structured.py            codes; time crystal at L = 12
      python toys/toy8b_structured.py --quick    checks and a small sweep
 """
 
+import cmath
 import itertools
 import math
 import sys
@@ -331,6 +332,87 @@ def direct_check(name, noise="depolarizing", eps=0.05, r=0.5, steps=8, with_regi
     return worst
 
 
+# ---------------------------------------------------------------- exporting cuts (revision 4.6, section 2 item 3)
+PSI_L = np.array([math.cos(math.pi / 8), cmath.exp(1j * math.pi / 4) * math.sin(math.pi / 8)])
+_X2 = np.array([[0, 1], [1, 0]], complex)
+_Z2 = np.diag([1.0, -1.0]).astype(complex)
+LVEC = [PSI_L, _Z2 @ PSI_L, _X2 @ PSI_L, _X2 @ _Z2 @ PSI_L]           # index l = 2 * (X_L part) + (Z_L part)
+LPROJ = np.array([np.outer(v, v.conj()) for v in LVEC])
+
+
+def logical_blocks(P, S, with_register):
+    """The state for a fixed logical state psi is block diagonal: one 2 x 2 block per syndrome s (and per register
+    value, if the register is included), spanned by C_s|0_L> and C_s|1_L>."""
+    Pr = P.reshape(S, S, 4)
+    if not with_register:
+        Pr = Pr.sum(0, keepdims=True)
+    return np.einsum("rsl,lij->rsij", Pr, LPROJ).reshape(-1, 2, 2)
+
+
+def _block_entropy(B):
+    w = np.linalg.eigvalsh((B + B.conj().swapaxes(-1, -2)) / 2).reshape(-1)
+    w = w[w > 1e-15]
+    return float(-np.sum(w * np.log2(w)))
+
+
+def block_holevo(B0, B1):
+    return _block_entropy((B0 + B1) / 2) - (_block_entropy(B0) + _block_entropy(B1)) / 2
+
+
+def ledger_join(code, sE, lE, r, T):
+    """Noise-free case: enumerate the steps at which correction ran (a record both alternatives share). Given that,
+    each alternative is pure: C_s L psi, the register, and every overwritten register value (exported as heat).
+    Returns J over all of it at each step."""
+    out = []
+    for t in range(T + 1):
+        J = 0.0
+        for h in itertools.product((0, 1), repeat=t):
+            ph = float(np.prod([r if x else 1 - r for x in h])) if t else 1.0
+            if ph == 0:
+                continue
+            st = []
+            for s, l in ((0, 0), (sE, lE)):
+                reg, ledger = 0, []
+                for x in h:
+                    if x:
+                        ledger.append(reg)
+                        reg, s = s, 0
+                st.append((s, l, reg, tuple(ledger)))
+            (s0, l0, r0, g0), (s1, l1, r1, g1) = st
+            if s0 == s1 and r0 == r1 and g0 == g1:
+                J += ph * abs(np.vdot(LVEC[l0], LVEC[l1]))
+        out.append(J)
+    return out
+
+
+def export_job(args):
+    name, err, eps, r, T = args
+    code = Code(name)
+    S = 1 << code.m
+    p = pauli(err)
+    sE = code.syn(p)
+    lE = code.cls(mul(code.C[sE], p))
+    P = [np.zeros((S, 4 * S)) for _ in (0, 1)]
+    P[0][0, 0] = 1.0
+    P[1][0, sE * 4 + lE] = 1.0
+    w = weights("depolarizing", eps)
+    rows = []
+    for t in range(T + 1):
+        if t > 0:
+            P = [step(code, X, w, eps, r) for X in P]
+        Bq = [logical_blocks(X, S, False) for X in P]
+        Br = [logical_blocks(X, S, True) for X in P]
+        rows.append((t, float(np.sum(L.fidelity(*Bq))), float(np.sum(L.fidelity(*Br))), block_holevo(*Bq), block_holevo(*Br)))
+    everything = ledger_join(code, sE, lE, r, T) if eps == 0 else None
+    return (name, err, eps, r), rows, everything, sE != 0
+
+
+def export_errors(name):
+    n = len(CODES[name][1])
+    errs = ["X" + "I" * (n - 1), "Z" + "I" * (n - 1)]
+    return errs + (["Y" + "I" * (n - 1)] if name == "rep3" else [])
+
+
 # ---------------------------------------------------------------- time crystal
 def crystal_job(args):
     L_, g, p, T, ntraj, seed, rec_times = args
@@ -411,6 +493,18 @@ def run_checks(out):
     worst = max(worst, max(direct_check(n_, noise="dephasing", eps=0.08, r=0.3, steps=5) for n_ in ("rep3", "[[5,1,3]]")))
     out.say(f"A direct density-matrix simulation of noise and correction matches the exact table for every code "
             f"(worst difference in J {worst:.1e}; with the register too, except Steane).")
+    for name in ("[[5,1,3]]", "Steane [[7,1,3]]", "rep3"):
+        _, rows, every, seen = export_job((name, "X" + "I" * (len(CODES[name][1]) - 1), 0.0, 1.0, 3))
+        L.check(np.allclose([x[1] for x in rows], [0, 1, 1, 1], atol=1e-6), f"{name}: correction re-joins the qubits at the first step")
+        L.check(np.allclose([x[2] for x in rows], [0, 0, 1, 1], atol=1e-6), f"{name}: qubits with the register re-join only when it is overwritten")
+        L.check(max(every) < 1e-12, f"{name}: over everything the cut stays made")
+    _, rows, every, seen = export_job(("rep3", "ZII", 0.0, 1.0, 3))
+    z = abs(np.vdot(PSI_L, _Z2 @ PSI_L))
+    L.check(not seen and all(abs(x[1] - z) < 1e-6 and abs(x[2] - z) < 1e-6 for x in rows) and all(abs(e - z) < 1e-12 for e in every),
+            "rep3: an error the code cannot see stays a cut in the qubits")
+    out.say("Exporting cuts (no noise, correction every step): for a detected error, J over the qubits goes 0 -> 1 at the first "
+            "correction, J over the qubits and register goes 0 -> 1 when the register is overwritten, and J over everything "
+            f"(including each overwritten register value) stays 0. An error the code cannot see (Z on rep3) stays at J = {z:.4f} everywhere.")
     res = crystal_job((6, 1.0, 0.0, 20, 1, 7, list(range(21))))
     L.check(all(abs(r_[1]) < 1e-9 and abs(r_[4] - 1) < 1e-9 for r_ in res[1]), "g = 1, no noise: exact period doubling, J over the middle qubit = 0")
     L.check(res[2] < 1e-9, "no noise: the two alternatives stay orthogonal (global J = 0)")
@@ -443,6 +537,10 @@ def main(quick=False, with_L20=False):
     out.flag("time crystal question and noise", "the initial value of the middle qubit (a random bitstring, or it with the middle "
              "qubit flipped); Z-dephasing with probability p per qubit per cycle, trajectories averaged; global J not computed with noise",
              "Z noise commutes with the period-doubled Z pattern at g = 1, so it bites only when g < 1")
+    out.flag("exporting cuts (revision 4.6, section 2 item 3)", "question: was an error E (X or Z on qubit 0; Y too on rep3) "
+             "injected just before step 1? The logical state is fixed at a generic psi; depolarising noise eps in {0, 0.01}; r in {1, 0.5}. "
+             "J over the qubits, over the qubits with the register, and (eps = 0 only) over everything: qubits, register and every "
+             "overwritten register value", "with noise, 'everything' includes the noise's own environment and is 0 by unitarity; not computed")
     run_checks(out)
 
     names = ["rep3", "[[5,1,3]]"] if quick else list(CODES)
@@ -480,6 +578,27 @@ def main(quick=False, with_L20=False):
             curve, kh = cv[q]
             rows2.append([nm, nz, e, r, t, q] + [round(v, 6) for v in curve] + [""] * (7 - len(curve)) + [kh if kh else "none"])
     out.table("2_subset_curves", hdr, ["code", "noise", "eps", "r", "step", "question"] + [f"k = {k}" for k in range(1, 8)] + ["k_half"], rows2)
+
+    ejobs = [(nm, e, eps, r, 3 if quick else 6) for nm in names for e in export_errors(nm)
+             for eps in (0.0, 0.01) for r in (1.0, 0.5)]
+    with Pool(workers()) as pool:
+        eres = pool.map(export_job, ejobs, chunksize=1)
+    rows4 = []
+    for (nm, e, eps, r), rows, every, seen in eres:
+        for i, (t, Jq, Jr, cq, cr) in enumerate(rows):
+            rows4.append([nm, e, "yes" if seen else "no", eps, r, t, Jq, Jr, every[i] if every is not None else "", cq, cr])
+    out.table("4_exporting_cuts", {"event": "an error E on qubit 0, just before step 1, or no error",
+                                   "question": "was E injected? (the logical state is fixed at a generic psi)",
+                                   "prior": "uniform", "noise": "depolarising, eps per qubit per step",
+                                   "records": "qubits; the syndrome register; every overwritten register value (exported as heat)"},
+              ["code", "error E", "syndrome sees E", "eps", "r", "step", "J over qubits", "J over qubits + register",
+               "J over everything (eps = 0 only)", "chi bits, qubits", "chi bits, qubits + register"], rows4,
+              note="Revision 4.6, section 2 item 3: correction moves the cut out of the qubits, then out of the register; over "
+                   "everything it stays made. For the logical question (table 1) correction does the opposite: it keeps the qubits cut.")
+    for (nm, e, eps, r), rows, every, seen in eres:
+        if eps == 0.01 and r == 1.0:
+            out.say(f"Exporting cuts, {nm}, {e}, eps = 0.01, r = 1: J over qubits {', '.join(f'{x[1]:.3f}' for x in rows)}; "
+                    f"with register {', '.join(f'{x[2]:.3f}' for x in rows)} (steps 0..{rows[-1][0]})")
 
     Ls = [6] if quick else [12] + ([20] if with_L20 else [])
     gs = [1.0, 0.6] if quick else [1.0, 0.97, 0.9, 0.6]

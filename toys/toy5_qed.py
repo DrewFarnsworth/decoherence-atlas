@@ -204,7 +204,40 @@ def soft_factor(v1, v2, n_theta=400, n_phi=200):
 
 
 # ---------------------------------------------------------------- checks
+# ---------------------------------------------------------------- frame dependence of a spin join (open problem 4)
+def wigner_angle(xi, eta, cos_th):
+    """Thomas-Wigner rotation angle when a boost of rapidity eta acts on a particle of rapidity xi, the two
+    directions at angle th: tan(w/2) = sin th sinh(xi/2) sinh(eta/2) / (cosh(xi/2) cosh(eta/2) + cos th sinh(xi/2) sinh(eta/2))."""
+    sin_th = np.sqrt(np.clip(1 - cos_th ** 2, 0, None))
+    a = np.sinh(xi / 2) * np.sinh(eta / 2)
+    return 2 * np.arctan2(sin_th * a, np.cosh(xi / 2) * np.cosh(eta / 2) + cos_th * a)
+
+
+def boosted_spin_join(delta, eta, spin_axis, n=200000, seed=5):
+    """A spin-1/2 particle at rest on average, isotropic Gaussian momentum spread delta (units of m c). Alternatives:
+    spin up or down along spin_axis in each momentum component's rest frame. A boost of rapidity eta along x rotates
+    each component's spin by the Wigner angle about x cross p. The alternatives' spin states then have Bloch vectors
+    +r and -r, so J over the spin alone is sqrt(1 - |r|^2). Over spin and momentum together J stays 0: each momentum
+    component carries both spins through the same rotation."""
+    rng = np.random.default_rng(seed)
+    p = rng.normal(0.0, delta, (n, 3))
+    pm = np.linalg.norm(p, axis=1)
+    w = wigner_angle(np.arcsinh(pm), eta, p[:, 0] / pm)
+    ax = np.cross([1.0, 0.0, 0.0], p)
+    ax /= np.maximum(np.linalg.norm(ax, axis=1, keepdims=True), 1e-300)
+    sv = np.asarray(spin_axis, float)
+    c, s_ = np.cos(w)[:, None], np.sin(w)[:, None]
+    r = sv * c + np.cross(ax, sv) * s_ + ax * (ax @ sv)[:, None] * (1 - c)
+    rbar = r.mean(axis=0)
+    return math.sqrt(max(0.0, 1.0 - float(rbar @ rbar))), float(np.linalg.norm(rbar))
+
+
 def checks(out):
+    # Wigner rotation: none for collinear boosts or eta = 0; Thomas precession v1 v2 sin(th) / 2 at low speed
+    L.check(abs(wigner_angle(1.3, 0.0, 0.2)) < 1e-15 and abs(wigner_angle(1.3, 2.0, 1.0)) < 1e-15, "no Wigner rotation for collinear boosts")
+    lo = wigner_angle(1e-3, 2e-3, math.cos(0.7))
+    L.check(abs(lo / (1e-3 * 2e-3 * math.sin(0.7) / 2) - 1) < 1e-5, "Wigner angle reduces to Thomas precession at low speed")
+    L.check(boosted_spin_join(0.5, 0.0, (0, 0, 1), n=2000)[0] < 1e-12, "no boost: the spin alternatives stay fully cut")
     # massless-limit cross sections at sqrt(s) = 2000 m_e, theta = 1 rad
     rs, th = 2000.0, 1.0
     for name, fn, m_out, formula in (
@@ -258,6 +291,10 @@ def main(quick=False):
     out.flag("soft factor normalization", "derived from coherent-state overlap exp(-1/2 |alpha - beta|^2); agrees with the spec's slow limit",
              "Carney et al. 2017 was not re-read for the prefactor")
     out.flag("soft cutoff Lambda", "kinetic energy of the faster outcome, m (gamma - 1), with the slower at rest", "the spec says energy transferred, flagged")
+    out.flag("frame dependence of a spin join (open problem 4)", "spin-1/2 particle at rest on average, isotropic Gaussian momentum "
+             "spread delta (units of m c); alternatives spin up or down in the rest frames, along z or x; boost along x; spin rotated by "
+             "the Thomas-Wigner angle (two-boost composition formula); 200,000 Monte Carlo samples", "after Peres, Scudo & Terno 2002, "
+             "whose exact wave packet is not reproduced")
     out.flag("T_half", "reported as log10 of seconds, since 2^(1/A) overflows", "A is tiny at small velocity differences")
     checks(out)
 
@@ -350,6 +387,22 @@ def main(quick=False):
               note="Reported, not resolved: which change of tension is valence, and in which frame.")
     out.say(f"Frame table: {sum(1 for r in rows if r[-1])} sign flips of the electron's energy change across boosts; "
             "the CM change is 0 for elastic scattering.")
+    rows = []
+    for delta in ((0.5, 1.0) if quick else (0.1, 0.5, 1.0, 2.0)):
+        for eta in ((0.0, 1.0, 4.0) if quick else (0.0, 0.5, 1.0, 2.0, 4.0, 8.0)):
+            for name, axis in (("z (across the boost)", (0, 0, 1)), ("x (along the boost)", (1, 0, 0))):
+                J, rb = boosted_spin_join(delta, eta, axis, n=20000 if quick else 200000)
+                rows.append([delta, eta, name, J, 0.0, rb])
+    out.table("6_frame_spin_join", {"event": "preparation of a spin-1/2 particle, then a change of frame",
+                                    "alternatives": "spin up or spin down (rest-frame spin)", "prior": "uniform",
+                                    "records": "the particle's spin alone, or spin and momentum together"},
+              ["momentum spread delta (m c)", "boost rapidity eta", "spin axis", "J over spin alone", "J over spin and momentum",
+               "|mean Bloch vector|"], rows,
+              note="Open problem 4: the join over a part depends on the frame; over the part with what the frame change mixes into it, it does not.")
+    for delta in sorted(set(r[0] for r in rows)):
+        sel = [r for r in rows if r[0] == delta and r[2].startswith("z")]
+        out.say(f"Frame and spin join, delta = {delta} m c: J over spin alone {', '.join(f'{r[3]:.3f}' for r in sel)} "
+                f"at eta = {', '.join(str(r[1]) for r in sel)}; over spin and momentum, 0 in every frame.")
     out.finish()
 
 

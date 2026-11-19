@@ -102,12 +102,14 @@ def test_exchange_join_is_overlap_squared_for_pure_states():
 def test_toy1b_chain_cases():
     import toy1b_chain as T
     kws = [("A", {}), ("B", {"cs": [0.9, 0.7, 0.5]}), ("C", {"c": 0.6}), ("D", {"phi": 1.0}),
-           ("E", {"cP": 0.6, "measure": True}), ("F", {"cP": 0.6, "measure": True}), ("G", {"R": 0.3})]
+           ("E", {"cP": 0.6, "measure": True}), ("F", {"cP": 0.6, "measure": True}), ("G", {"R": 0.3}), ("H", {"c": 0.6})]
     for case, kw in kws:
         ch, vecs, nq, Je, Jphys, Jout, V, Vmax = T.analyse(case, **kw)
         assert 0 <= Jphys <= Je + 1e-10 <= 1 + 1e-9          # more records never join more
         assert V <= Vmax * Je + 1e-9                          # fringes never exceed what the records allow
     assert T.port_bhattacharyya(0.5) == pytest.approx(1.0)
+    ch, vecs, nq, *_ = T.analyse("H", c=0.6)
+    assert T.fid_over(vecs, nq, [2]) == pytest.approx(1.0) and T.fid_over(vecs, nq, [0, 1, 2]) == pytest.approx(0.36)
 
 
 def test_toy8_checks():
@@ -118,3 +120,14 @@ def test_toy8_checks():
 def test_toy8b_checks():
     import toy8b_structured as T
     T.run_checks(Quiet())
+
+
+def test_swap_join_equals_exchange_join():
+    rng = np.random.default_rng(8)
+    for d in (2, 3, 4):
+        for _ in range(3):
+            A = rng.normal(size=(d, d)) + 1j * rng.normal(size=(d, d)); r1 = A @ A.conj().T; r1 /= np.trace(r1)
+            B = rng.normal(size=(d, d)) + 1j * rng.normal(size=(d, d)); r2 = B @ B.conj().T; r2 /= np.trace(r2)
+            assert L.swap_join(r1, r2) == pytest.approx(float(np.real(L.exchange_join(r1, r2))), abs=1e-12)
+            dephase = lambda r: np.diag(np.diag(r))
+            assert L.registered_join(r1, r2, dephase) >= float(L.fidelity(r1, r2)) - 1e-9
