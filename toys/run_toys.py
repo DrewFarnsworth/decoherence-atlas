@@ -1,8 +1,8 @@
 """Run the bridge toys and collect their flagged choices into toys/FLAGS.md.
 
-    python toys/run_toys.py              all ten toys, full settings (toys 4, 7 and 8 take longest)
+    python toys/run_toys.py              all eleven toys, full settings (toys 4, 7 and 8 take longest)
     python toys/run_toys.py 1 2 6        just some
-    python toys/run_toys.py --quick      quick modes (toys 4, 5, 7, 8, 8b) and the fast toys
+    python toys/run_toys.py --quick      quick modes (toys 4, 5, 7, 8, 8b, 9) and the fast toys
     python toys/run_toys.py --flags      only rebuild FLAGS.md from saved results
     python toys/run_toys.py --force      rerun even toys whose code has not changed
 
@@ -24,8 +24,8 @@ from atlas.stamp import fingerprint, is_fresh, write_stamp  # noqa: E402
 
 SCRIPTS = {"1": "toy1_markers.py", "1b": "toy1b_chain.py", "2": "toy2_hom.py", "3": "toy3_superradiance.py",
            "4": "toy4_graph_domains.py", "5": "toy5_qed.py", "6": "toy6_radical_pair.py", "7": "toy7_parts.py",
-           "8": "toy8_web.py", "8b": "toy8b_structured.py"}
-QUICKABLE = {"4", "5", "7", "8", "8b"}
+           "8": "toy8_web.py", "8b": "toy8b_structured.py", "9": "toy9_static_fields.py"}
+QUICKABLE = {"4", "5", "7", "8", "8b", "9"}
 DEPENDS = {"3": ["toy2_hom.py"], "7": ["toy4_graph_domains.py"]}   # other toy scripts each toy imports
 
 if __name__ == "__main__":

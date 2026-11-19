@@ -19,7 +19,7 @@ Approximate full-run times on a laptop:
 
 | Toy | Time |
 |---|---|
-| 1 markers, 1b chain, 2 HOM, 6 radical pair | under 30 s each |
+| 1 markers, 1b chain, 2 HOM, 6 radical pair, 9 static fields | under 30 s each |
 | 5 QED scattering | about a minute |
 | 3 superradiance | about 4 min |
 | 4 graph domains | not yet timed; try `--quick` first |

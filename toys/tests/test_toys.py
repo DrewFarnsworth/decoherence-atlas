@@ -131,3 +131,8 @@ def test_swap_join_equals_exchange_join():
             assert L.swap_join(r1, r2) == pytest.approx(float(np.real(L.exchange_join(r1, r2))), abs=1e-12)
             dephase = lambda r: np.diag(np.diag(r))
             assert L.registered_join(r1, r2, dephase) >= float(L.fidelity(r1, r2)) - 1e-9
+
+
+def test_toy9_checks():
+    import toy9_static_fields as T
+    T.run_checks(Quiet())
